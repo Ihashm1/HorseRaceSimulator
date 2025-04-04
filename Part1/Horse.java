@@ -72,12 +72,19 @@ public class Horse
 
     public void setConfidence(double newConfidence)
     {
-        confidence = newConfidence;
+        if (newConfidence < 0) {
+            confidence = 0;
+        } else if (newConfidence > 1) {
+            confidence = 1;
+        } else {
+            confidence = newConfidence;
+        }
     }
     
     public void setSymbol(char newSymbol)
     {
        symbol = newSymbol; 
     }
+
     
 }
