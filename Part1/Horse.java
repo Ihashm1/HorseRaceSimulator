@@ -31,52 +31,53 @@ public class Horse
     //Other methods of class Horse
     public void fall()
     {
-        
+        hasFallen = true;
     }
     
     public double getConfidence()
     {
-        
+        return confidence;
     }
     
     public int getDistanceTravelled()
     {
-        
+        return distanceTravelled;
     }
     
     public String getName()
     {
-        
+        return name;
     }
     
     public char getSymbol()
     {
-        
+        return symbol;
     }
     
     public void goBackToStart()
     {
-        
+        distanceTravelled = 0;
+        hasFallen = false;
     }
     
     public boolean hasFallen()
     {
-        
+        return hasFallen;
     }
 
     public void moveForward()
     {
-        
+        distanceTravelled += 1;
     }
 
     public void setConfidence(double newConfidence)
     {
-        
+        confidence = newConfidence;
     }
     
     public void setSymbol(char newSymbol)
     {
-        
+       symbol = newSymbol; 
     }
     
 }
