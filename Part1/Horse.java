@@ -86,5 +86,48 @@ public class Horse
        symbol = newSymbol; 
     }
 
+    /**
+     * Main method to test the Horse class functionality.
+     */
+    public static void main(String[] args) {
+        
+        // Test constructor and getter methods
+        Horse h1 = new Horse('♘', "PIPPI LONGSTOCKING", 0.8);
+
+
+        // Test getName and getSymbol
+        System.out.println("Horse: " + h1.getName() + " Symbol: " + h1.getSymbol());
+        
+        // Test getConfidence
+        System.out.println("Confidence: " + h1.getConfidence());
+        // Test getDistanceTravelled 
+        System.out.println("Distance: " + h1.getDistanceTravelled());
+        
+        // Test hasFallen 
+        System.out.println("Has fallen? " + h1.hasFallen());
+
+        // Test fall method and then check with hasFallen method
+        h1.fall();
+        System.out.println("Has fallen? " + h1.hasFallen());
+
+
+        // Move forward and test distance
+        h1.moveForward();
+        System.out.println("Distance after moving forward: " + h1.getDistanceTravelled());
+
+
+        // Test goBackToStart
+        h1.goBackToStart();
+        System.out.println("Distance after reset: " + h1.getDistanceTravelled());
+        System.out.println("Has fallen after reset? " + h1.hasFallen());
+
+        //Test setConfidence boundaries 
+        h1.setConfidence(1.2);
+        System.out.println("Confidence: " + h1.getConfidence());
+        h1.setConfidence(-0.8);
+        System.out.println("Confidence: " + h1.getConfidence());
+        h1.setConfidence(0.5);
+        System.out.println("Confidence: " + h1.getConfidence());
+    }
     
 }
