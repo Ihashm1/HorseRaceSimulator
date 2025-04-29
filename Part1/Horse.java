@@ -110,11 +110,9 @@ public class Horse
         h1.fall();
         System.out.println("Has fallen? " + h1.hasFallen());
 
-
         // Move forward and test distance
         h1.moveForward();
         System.out.println("Distance after moving forward: " + h1.getDistanceTravelled());
-
 
         // Test goBackToStart
         h1.goBackToStart();
@@ -128,6 +126,10 @@ public class Horse
         System.out.println("Confidence: " + h1.getConfidence());
         h1.setConfidence(0.5);
         System.out.println("Confidence: " + h1.getConfidence());
+
+        //Test setSymbol method
+        h1.setSymbol('♜');
+        System.out.println("New Symbol: " + h1.getSymbol());
     }
     
 }
