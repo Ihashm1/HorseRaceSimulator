@@ -1,36 +1,80 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class TrackDesigner {
 
+    // Declare global components to access across methods
+    static JTextField laneInput;
+    static JTextField lengthInput;
+    static JLabel resultLabel;
+
     public static void main(String[] args) {
-        // Create the window
+        JFrame frame = createFrame();
+        JPanel panel = createPanel();
+
+        addInputFields(panel);
+        addApplyButton(panel);
+
+        frame.add(panel);
+        frame.setVisible(true);
+    }
+
+    //Create the main window
+    private static JFrame createFrame() {
         JFrame frame = new JFrame("Horse Race Track Designer");
         frame.setSize(600, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        return frame;
+    }
 
-        // Create a panel to hold UI components - A container for labels, buttons, etc.
+    //Create the main panel with layout
+    private static JPanel createPanel() {
         JPanel panel = new JPanel();
-        //Organises items in a 4x2 grid with spacing between rows/columns.
-        panel.setLayout(new GridLayout(4, 2, 10, 10)); 
+        panel.setLayout(new GridLayout(4, 2, 10, 10));
+        return panel;
+    }
 
-        // Lane count input
+    // Add input fields for lane count and track length
+    private static void addInputFields(JPanel panel) {
         JLabel laneLabel = new JLabel("Number of Lanes:");
-        //A box where the user can type input.
-        JTextField laneInput = new JTextField();
+        laneInput = new JTextField();
 
-        // Track length input
         JLabel lengthLabel = new JLabel("Track Length:");
-        JTextField lengthInput = new JTextField();
+        lengthInput = new JTextField();
 
-        // Add components to panel
         panel.add(laneLabel);
         panel.add(laneInput);
         panel.add(lengthLabel);
         panel.add(lengthInput);
+    }
 
-        // Add panel to frame and show
-        frame.add(panel);
-        frame.setVisible(true);
+    // Add button and result label, and link the button logic
+    private static void addApplyButton(JPanel panel) {
+        JButton applyButton = new JButton("Apply Settings");
+        resultLabel = new JLabel("");
+
+        panel.add(applyButton);
+        panel.add(resultLabel);
+
+        applyButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                handleApplySettings();
+            }
+        });
+    }
+
+    // Handle what happens when the Apply button is clicked
+    private static void handleApplySettings() {
+        String laneText = laneInput.getText();
+        String lengthText = lengthInput.getText();
+
+        try {
+            int lanes = Integer.parseInt(laneText);
+            int length = Integer.parseInt(lengthText);
+            resultLabel.setText("Track: " + lanes + " lanes, " + length + " units");
+        } catch (NumberFormatException ex) {
+            resultLabel.setText("Please enter valid numbers.");
+        }
     }
 }
