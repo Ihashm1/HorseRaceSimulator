@@ -11,8 +11,8 @@ import java.lang.Math;
 public class Race
 {
     private int raceLength;
-    private static final int LANE_COUNT = 5;
-    private Horse[] lanes = new Horse[LANE_COUNT];
+    private int laneCount;
+    private Horse[] lanes;
     
 
     /**
@@ -21,10 +21,11 @@ public class Race
      * 
      * @param distance the length of the racetrack (in metres/yards...)
      */
-    public Race(int distance)
+    public Race(int distance, int laneCount)
     {
-        // initialise instance variables
-        raceLength = distance;
+        this.raceLength = distance;
+        this.laneCount = laneCount;
+        this.lanes = new Horse[laneCount];
     }
     
     /**
@@ -35,7 +36,7 @@ public class Race
      */
     public void addHorse(Horse theHorse, int laneNumber)
     {
-        if (laneNumber >= 1 && laneNumber <= LANE_COUNT)
+        if (laneNumber >= 1 && laneNumber <= laneCount)
         {
             lanes[laneNumber - 1] = theHorse;
         }
@@ -102,7 +103,7 @@ public class Race
             }catch(Exception e){}
         }
 
-        String[] winners = new String[LANE_COUNT];
+        String[] winners = new String[laneCount];
         int winnerCount = 0;
 
         for (Horse horse : lanes) {
