@@ -97,13 +97,12 @@ public class Race
         }
 
         String winner = null;
-        if (raceWonBy(lane1Horse)) {
-            winner = lane1Horse.getName();
-        } else if (raceWonBy(lane2Horse)) {
-            winner = lane2Horse.getName();
-        } else if (raceWonBy(lane3Horse)) {
-            winner = lane3Horse.getName();
-        }
+        for (Horse horse : lanes) {
+            if (raceWonBy(horse)) {
+                winner = horse.getName();
+                break;
+            }
+}
 
         System.out.println("\nAnd the winner is… " + winner.toUpperCase() + "!");
     }
