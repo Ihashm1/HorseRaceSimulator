@@ -61,7 +61,7 @@ public class Race
         if (horse != null) {
             horse.goBackToStart();
         }
-}
+        }
                       
         while (!finished)
         {
@@ -79,6 +79,23 @@ public class Race
                 finished = true;
                 break;
             }
+
+            // Check if all horses have fallen
+            boolean allFallen = true;
+            for (Horse horse : lanes) {
+                if (horse != null && !horse.hasFallen()) {
+                    allFallen = false;
+                    break;
+                }
+            }
+            if (allFallen) {
+                finished = true;
+                printRace(); // update screen before ending
+                System.out.println("\nAll horses have fallen. No winner.");
+                return;
+            }
+
+            
 }
            
             //wait for 100 milliseconds
