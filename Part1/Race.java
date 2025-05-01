@@ -11,9 +11,7 @@ import java.lang.Math;
 public class Race
 {
     private int raceLength;
-    private Horse lane1Horse;
-    private Horse lane2Horse;
-    private Horse lane3Horse;
+    private Horse[] lanes = new Horse[3]; // Index 0 = lane 1, etc.
 
     /**
      * Constructor for objects of class Race
