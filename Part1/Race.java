@@ -93,7 +93,19 @@ public class Race
                 TimeUnit.MILLISECONDS.sleep(100);
             }catch(Exception e){}
         }
+
+        String winner = null;
+        if (raceWonBy(lane1Horse)) {
+            winner = lane1Horse.getName();
+        } else if (raceWonBy(lane2Horse)) {
+            winner = lane2Horse.getName();
+        } else if (raceWonBy(lane3Horse)) {
+            winner = lane3Horse.getName();
+        }
+
+        System.out.println("\nAnd the winner is… " + winner.toUpperCase() + "!");
     }
+
     
     /**
      * Randomly make a horse move forward or fall depending
@@ -218,4 +230,22 @@ public class Race
             i = i + 1;
         }
     }
+
+    public static void main(String[] args) {
+    // Create a new race with a track length of 20
+        Race race = new Race(20);
+
+        // Create three Horse objects
+        Horse horse1 = new Horse('B', "Bolt", 0.8);      // 80% confidence
+        Horse horse2 = new Horse('F', "Flash", 0.6);     // 60% confidence
+        Horse horse3 = new Horse('S', "Storm", 0.7);     // 70% confidence
+
+        // Add horses to the race in lanes 1–3
+        race.addHorse(horse1, 1);
+        race.addHorse(horse2, 2);
+        race.addHorse(horse3, 3);
+
+        // Start the race
+        race.startRace();
+      }
 }
