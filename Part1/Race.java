@@ -11,7 +11,9 @@ import java.lang.Math;
 public class Race
 {
     private int raceLength;
-    private Horse[] lanes = new Horse[3]; // Index 0 = lane 1, etc.
+    private static final int LANE_COUNT = 3;
+    private Horse[] lanes = new Horse[LANE_COUNT];
+    
 
     /**
      * Constructor for objects of class Race
@@ -23,9 +25,6 @@ public class Race
     {
         // initialise instance variables
         raceLength = distance;
-        lane1Horse = null;
-        lane2Horse = null;
-        lane3Horse = null;
     }
     
     /**
