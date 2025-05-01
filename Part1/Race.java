@@ -217,6 +217,9 @@ public class Race
         
         //print the | for the end of the track
         System.out.print('|');
+
+         // Print the horse's name and confidence on the side
+        System.out.print(" " + theHorse.getName().toUpperCase() + " (Current confidence " + theHorse.getConfidence() + ")");
     }
         
     
