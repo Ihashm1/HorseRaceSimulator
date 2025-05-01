@@ -75,9 +75,9 @@ public class Race
         while (!finished)
         {
             //move each horse
-            moveHorse(lane1Horse);
-            moveHorse(lane2Horse);
-            moveHorse(lane3Horse);
+            for (Horse horse : lanes) {
+        q   moveHorse(horse);
+}
                         
             //print the race positions
             printRace();
