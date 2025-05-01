@@ -159,14 +159,13 @@ public class Race
         multiplePrint('=',raceLength+3); //top edge of track
         System.out.println();
         
-        printLane(lane1Horse);
-        System.out.println();
+        for (Horse h : lanes) {
+        if (h != null) {
+            printLane(h);
+            System.out.println();
+        }
         
-        printLane(lane2Horse);
-        System.out.println();
-        
-        printLane(lane3Horse);
-        System.out.println();
+    }
         
         multiplePrint('=',raceLength+3); //bottom edge of track
         System.out.println();    
