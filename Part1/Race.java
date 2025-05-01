@@ -66,9 +66,11 @@ public class Race
         boolean finished = false;
         
         //reset all the lanes (all horses not fallen and back to 0). 
-        lane1Horse.goBackToStart();
-        lane2Horse.goBackToStart();
-        lane3Horse.goBackToStart();
+        for (Horse horse : lanes) {
+        if (horse != null) {
+            horse.goBackToStart();
+        }
+}
                       
         while (!finished)
         {
