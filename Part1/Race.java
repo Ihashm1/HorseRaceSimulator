@@ -11,7 +11,7 @@ import java.lang.Math;
 public class Race
 {
     private int raceLength;
-    private static final int LANE_COUNT = 3;
+    private static final int LANE_COUNT = 5;
     private Horse[] lanes = new Horse[LANE_COUNT];
     
 
@@ -35,7 +35,7 @@ public class Race
      */
     public void addHorse(Horse theHorse, int laneNumber)
     {
-        if (laneNumber >= 1 && laneNumber <= 3)
+        if (laneNumber >= 1 && laneNumber <= LANE_COUNT)
         {
             lanes[laneNumber - 1] = theHorse;
         }
@@ -74,8 +74,8 @@ public class Race
             printRace();
             
             //if any of the three horses has won the race is finished
-            for (Horse horse : lanes) {
-            if (raceWonBy(horse)) {
+            for (Horse currenthorse : lanes) {
+            if (raceWonBy(currenthorse)) {
                 finished = true;
                 break;
             }
@@ -96,8 +96,6 @@ public class Race
             }
 
             
-}
-           
             //wait for 100 milliseconds
             try{ 
                 TimeUnit.MILLISECONDS.sleep(100);
@@ -124,8 +122,8 @@ public class Race
         } else if (winnerCount == 1) {
             System.out.println("\nAnd the winner is… " + winners[0].toUpperCase() + "!");
         }
+        }
     }
-
     
     /**
      * Randomly make a horse move forward or fall depending
@@ -148,7 +146,7 @@ public class Race
             theHorse.fall();
         }
     }
-}
+    }
         
     /** 
      * Determines if a horse has won the race
@@ -158,7 +156,7 @@ public class Race
      */
     private boolean raceWonBy(Horse theHorse)
     {
-        if (theHorse == null) return false; // <- NEW LINE to avoid crash
+        if (theHorse == null) return false; // avoid crash
         return theHorse.getDistanceTravelled() == raceLength;
     }
     
@@ -167,7 +165,7 @@ public class Race
      */
     private void printRace()
     {
-        System.out.print('\u000C');  //clear the terminal window
+        System.out.print('\u000C');  
         
         multiplePrint('=',raceLength+3); //top edge of track
         System.out.println();
@@ -178,7 +176,7 @@ public class Race
             System.out.println();
         }
         
-    }
+     }
         
         multiplePrint('=',raceLength+3); //bottom edge of track
         System.out.println();    
@@ -239,27 +237,25 @@ public class Race
     }
 
     public static void main(String[] args) {
-    // Create a new race with a track length of 20
-        Race race = new Race(20);
-        Race race2 = new Race(20);
+    
+    // Race 1: Standard 3 Horses
+    Race race1 = new Race(20);
+    Horse h1 = new Horse('B', "Bolt", 0.8);
+    Horse h2 = new Horse('F', "Flash", 0.6);
+    Horse h3 = new Horse('S', "Storm", 0.7);
+    race1.addHorse(h1, 1);
+    race1.addHorse(h2, 2);
+    race1.addHorse(h3, 3);
+    race1.startRace();
 
-        // Create three Horse objects
-        Horse horse1 = new Horse('B', "Bolt", 0.8);      // 80% confidence
-        Horse horse2 = new Horse('F', "Flash", 0.6);     // 60% confidence
-        Horse horse3 = new Horse('S', "Storm", 0.7);     // 70% confidence
+    // Race 2: Empty and Extra Lanes
+    Race race2 = new Race(20);
+    race2.addHorse(h1, 1); // valid
+    race2.addHorse(h2, 2); // valid
+    race2.addHorse(h1, 4); // same horse reused
+    // lane 3 and 5 left empty
+    race2.startRace();
 
-        // Add horses to the race in lanes 1–3
-        race.addHorse(horse1, 1);
-        race.addHorse(horse2, 2);
-        race.addHorse(horse3, 3);
-
-        // Start the race - normal
-       race.startRace();
-
-        race2.addHorse(horse1, 1);
-        race2.addHorse(horse2, 2);
-        //  missing horse3 in lane 3
-
-        race2.startRace(); // Start the second
+        
       }
 }
