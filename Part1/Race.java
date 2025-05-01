@@ -87,15 +87,26 @@ public class Race
             }catch(Exception e){}
         }
 
-        String winner = null;
+        String[] winners = new String[LANE_COUNT];
+        int winnerCount = 0;
+
         for (Horse horse : lanes) {
             if (raceWonBy(horse)) {
-                winner = horse.getName();
-                break;
+                winners[winnerCount] = horse.getName();
+                winnerCount++;
             }
-}
+        }
 
-        System.out.println("\nAnd the winner is… " + winner.toUpperCase() + "!");
+        if (winnerCount > 1) {
+            System.out.print("\nIt's a tie between: ");
+            for (int i = 0; i < winnerCount; i++) {
+                System.out.print(winners[i].toUpperCase());
+                if (i < winnerCount - 1) System.out.print(" and ");
+            }
+            System.out.println("!");
+        } else if (winnerCount == 1) {
+            System.out.println("\nAnd the winner is… " + winners[0].toUpperCase() + "!");
+        }
     }
 
     
