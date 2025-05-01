@@ -141,14 +141,8 @@ public class Race
      */
     private boolean raceWonBy(Horse theHorse)
     {
-        if (theHorse.getDistanceTravelled() == raceLength)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        if (theHorse == null) return false; // <- NEW LINE to avoid crash
+        return theHorse.getDistanceTravelled() == raceLength;
     }
     
     /***
@@ -230,6 +224,7 @@ public class Race
     public static void main(String[] args) {
     // Create a new race with a track length of 20
         Race race = new Race(20);
+        Race race2 = new Race(20);
 
         // Create three Horse objects
         Horse horse1 = new Horse('B', "Bolt", 0.8);      // 80% confidence
@@ -241,7 +236,13 @@ public class Race
         race.addHorse(horse2, 2);
         race.addHorse(horse3, 3);
 
-        // Start the race
-        race.startRace();
+        // Start the race - normal
+       race.startRace();
+
+        race2.addHorse(horse1, 1);
+        race2.addHorse(horse2, 2);
+        //  missing horse3 in lane 3
+
+        race2.startRace(); // Start the second
       }
 }
