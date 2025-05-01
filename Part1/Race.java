@@ -36,17 +36,9 @@ public class Race
      */
     public void addHorse(Horse theHorse, int laneNumber)
     {
-        if (laneNumber == 1)
+        if (laneNumber >= 1 && laneNumber <= 3)
         {
-            lane1Horse = theHorse;
-        }
-        else if (laneNumber == 2)
-        {
-            lane2Horse = theHorse;
-        }
-        else if (laneNumber == 3)
-        {
-            lane3Horse = theHorse;
+            lanes[laneNumber - 1] = theHorse;
         }
         else
         {
@@ -76,8 +68,8 @@ public class Race
         {
             //move each horse
             for (Horse horse : lanes) {
-        q   moveHorse(horse);
-}
+           moveHorse(horse);
+            }
                         
             //print the race positions
             printRace();
