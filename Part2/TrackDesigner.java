@@ -75,16 +75,20 @@ public class TrackDesigner {
     }
 
     private static void handleApplySettings() {
-        String laneText = laneInput.getText();
-        String lengthText = lengthInput.getText();
+    String laneText = laneInput.getText();
+    String lengthText = lengthInput.getText();
 
-        try {
-            int lanes = Integer.parseInt(laneText);
-            int length = Integer.parseInt(lengthText);
-            resultLabel.setText("Track: " + lanes + " lanes, " + length + " units");
-        } catch (NumberFormatException ex) {
-            resultLabel.setText("Please enter valid numbers.");
-        }
+    try {
+        int lanes = Integer.parseInt(laneText);
+        int length = Integer.parseInt(lengthText);
+        resultLabel.setText("Track: " + lanes + " lanes, " + length + " units");
+
+        runRaceSimulation(lanes, length); // <-- NEW
+
+    } catch (NumberFormatException ex) {
+        resultLabel.setText("Please enter valid numbers.");
+        raceOutputArea.setText("");
+    }
     }
 
     private static void runRaceSimulation(int lanes, int length) {
