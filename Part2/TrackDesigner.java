@@ -168,8 +168,24 @@ public class TrackDesigner {
             }
 
             finished = someoneWon || allFallen;
+
+            // Determine and display race result
+        String message;
+        if (someoneWon) {
+            // Find first horse that finished
+            for (Horse h : horses) {
+                if (h.getDistanceTravelled() >= length) {
+                    message = "🏆 Winner: " + h.getName();
+                    JOptionPane.showMessageDialog(null, message);
+                    break;
+                }
+            }
+        } else if (allFallen) {
+            message = "💥 All horses have fallen! No winner!";
+            JOptionPane.showMessageDialog(null, message);
         }
-    }).start();
+                }
+            }).start();
     }
 
 }
