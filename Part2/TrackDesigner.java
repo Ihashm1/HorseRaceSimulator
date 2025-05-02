@@ -2,13 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.SwingUtilities;
+import java.util.concurrent.TimeUnit;
 
 public class TrackDesigner {
 
     static JTextField laneInput;
     static JTextField lengthInput;
     static JLabel resultLabel;
-    static JTextArea raceOutputArea;
+    static RacePanel racePanel;
 
         public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -16,7 +17,7 @@ public class TrackDesigner {
             JPanel mainPanel = new JPanel(new BorderLayout());
             JPanel inputPanel = createInputPanel();
             JPanel controlPanel = createControlPanel();
-            JScrollPane outputPanel = createOutputPanel();
+            JPanel outputPanel = createOutputPanel();
 
             mainPanel.add(inputPanel, BorderLayout.NORTH);
             mainPanel.add(controlPanel, BorderLayout.CENTER);
@@ -65,13 +66,11 @@ public class TrackDesigner {
         return panel;
     }
 
-    private static JScrollPane createOutputPanel() {
-        raceOutputArea = new JTextArea(8, 40);
-        raceOutputArea.setEditable(false);
-        raceOutputArea.setLineWrap(true);
-        raceOutputArea.setWrapStyleWord(true);
-
-        return new JScrollPane(raceOutputArea);
+    private static JPanel createOutputPanel() {
+    racePanel = new RacePanel();
+    racePanel.setPreferredSize(new Dimension(600, 300));
+    racePanel.setBackground(Color.WHITE);
+    return racePanel;
     }
 
     private static void handleApplySettings() {
@@ -86,35 +85,69 @@ public class TrackDesigner {
         runRaceSimulation(lanes, length); // <-- NEW
 
     } catch (NumberFormatException ex) {
-        resultLabel.setText("Please enter valid numbers.");
-        raceOutputArea.setText("");
+      resultLabel.setText("Please enter valid numbers.");
     }
     }
 
     private static void runRaceSimulation(int lanes, int length) {
     Race race = new Race(length, lanes);
+    Horse[] horses = new Horse[lanes];
 
-    for (int i = 1; i <= lanes; i++) {
-        // Generate dummy horses with different names and confidence
-        Horse h = new Horse((char) ('A' + i - 1), "Horse" + i, 0.5 + (i * 0.05));
-        race.addHorse(h, i);
+    for (int i = 0; i < lanes; i++) {
+        horses[i] = new Horse('♘', "Horse" + (i + 1), 0.5 + (i * 0.05));
+        race.addHorse(horses[i], i + 1);
     }
 
-    // Capture console output
-    java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-    java.io.PrintStream ps = new java.io.PrintStream(baos);
-    java.io.PrintStream old = System.out;
-    System.setOut(ps);
+    // Setup the panel for drawing
+    racePanel.setupRace(horses, length);
 
-    race.startRace();
+    // Run the race in a separate thread
+    new Thread(() -> {
+        boolean finished = false;
 
-    System.out.flush();
-    System.setOut(old);
-    raceOutputArea.setText(baos.toString());
+        while (!finished) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            for (Horse h : horses) {
+                if (!h.hasFallen() && Math.random() < h.getConfidence()) {
+                    h.moveForward();
+                }
+                if (!h.hasFallen() && Math.random() < (0.1 * h.getConfidence() * h.getConfidence())) {
+                    h.fall();
+                }
+            }
+
+            racePanel.repaint();
+
+            boolean someoneWon = false;
+            for (Horse h : horses) {
+                if (h.getDistanceTravelled() >= length) {
+                    someoneWon = true;
+                    break;
+                }
+            }
+
+            boolean allFallen = true;
+            for (Horse h : horses) {
+                if (!h.hasFallen()) {
+                    allFallen = false;
+                    break;
+                }
+            }
+
+            finished = someoneWon || allFallen;
+        }
+    }).start();
     }
+
 }
 
-static class RacePanel extends JPanel {
+
+class RacePanel extends JPanel  {
     private Horse[] horses;
     private int trackLength;
 
