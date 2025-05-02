@@ -113,3 +113,35 @@ public class TrackDesigner {
     raceOutputArea.setText(baos.toString());
     }
 }
+
+static class RacePanel extends JPanel {
+    private Horse[] horses;
+    private int trackLength;
+
+    public void setupRace(Horse[] horses, int trackLength) {
+        this.horses = horses;
+        this.trackLength = trackLength;
+        repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (horses == null) return;
+
+        int laneHeight = 40;
+        int margin = 20;
+        for (int i = 0; i < horses.length; i++) {
+            Horse h = horses[i];
+            if (h == null) continue;
+
+            int y = i * laneHeight + margin;
+            g.drawLine(margin, y + 20, margin + trackLength * 20, y + 20); // lane line
+
+            int x = margin + h.getDistanceTravelled() * 20;
+            String symbol = h.hasFallen() ? "❌" : String.valueOf(h.getSymbol());
+            g.drawString(symbol, x, y + 20);
+            g.drawString(h.getName(), x + 20, y + 20);
+        }
+    }
+}
