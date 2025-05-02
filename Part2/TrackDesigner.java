@@ -24,6 +24,25 @@ public class TrackDesigner {
             JPanel controlPanel = createControlPanel();
             JPanel outputPanel = createOutputPanel();
 
+
+
+                mainPanel.setFocusable(true);
+                mainPanel.requestFocusInWindow();
+                mainPanel.addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                            currentWeatherIndex = (currentWeatherIndex - 1 + WeatherCondition.CONDITIONS.length) % WeatherCondition.CONDITIONS.length;
+                        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                            currentWeatherIndex = (currentWeatherIndex + 1) % WeatherCondition.CONDITIONS.length;
+                        }
+                        selectedWeather = WeatherCondition.CONDITIONS[currentWeatherIndex];
+                        resultLabel.setText("Weather: " + selectedWeather.getName());
+                    }
+                });
+
+
+
             mainPanel.add(inputPanel, BorderLayout.NORTH);
             mainPanel.add(controlPanel, BorderLayout.CENTER);
             mainPanel.add(outputPanel, BorderLayout.SOUTH);
@@ -85,7 +104,7 @@ public class TrackDesigner {
     try {
         int lanes = Integer.parseInt(laneText);
         int length = Integer.parseInt(lengthText);
-        resultLabel.setText("Track: " + lanes + " lanes, " + length + " units");
+        resultLabel.setText("Track: " + lanes + " lanes, " + length + " units | Weather: " + selectedWeather.getName());
 
         String[] horseNames = promptHorseNames(lanes);
         runRaceSimulation(lanes, length, horseNames);
@@ -94,6 +113,12 @@ public class TrackDesigner {
       resultLabel.setText("Please enter valid numbers.");
     }
     }
+
+    private static WeatherCondition switchWeather(int direction) {
+    WeatherCondition[] values = WeatherCondition.values();
+    int index = (selectedWeather.ordinal() + direction + values.length) % values.length;
+    return values[index];
+        }
 
     private static String[] promptHorseNames(int lanes) {
     String[] names = new String[lanes];
