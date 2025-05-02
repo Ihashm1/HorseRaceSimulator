@@ -82,11 +82,26 @@ public class TrackDesigner {
         int length = Integer.parseInt(lengthText);
         resultLabel.setText("Track: " + lanes + " lanes, " + length + " units");
 
-        runRaceSimulation(lanes, length); // <-- NEW
+        rString[] horseNames = promptHorseNames(lanes);
+        runRaceSimulation(lanes, length, horseNames);
 
     } catch (NumberFormatException ex) {
       resultLabel.setText("Please enter valid numbers.");
     }
+    }
+
+    private static String[] promptHorseNames(int lanes) {
+    String[] names = new String[lanes];
+
+    for (int i = 0; i < lanes; i++) {
+        String name = JOptionPane.showInputDialog(null, "Enter name for Horse " + (i + 1) + ":");
+        if (name == null || name.trim().isEmpty()) {
+            name = "Horse" + (i + 1); // fallback name
+        }
+        names[i] = name;
+    }
+
+    return names;
     }
 
     private static void runRaceSimulation(int lanes, int length) {
