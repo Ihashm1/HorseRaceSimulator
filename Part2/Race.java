@@ -1,6 +1,7 @@
 import java.util.concurrent.TimeUnit;
 import java.lang.Math;
 
+
 /**
  * A three-horse race, each horse running in its own lane
  * for a given distance
@@ -166,7 +167,7 @@ public class Race
      */
     private void printRace()
     {
-        System.out.print('\u000C');  
+        System.out.print("\033\143"); // clear terminasl window 
         
         multiplePrint('=',raceLength+3); //top edge of track
         System.out.println();
@@ -206,7 +207,7 @@ public class Race
         //else print the horse's symbol
         if(theHorse.hasFallen())
         {
-            System.out.print('\u2322');
+            System.out.print('❌'); // dead horse symbol
         }
         else
         {
@@ -243,17 +244,17 @@ public class Race
     public static void main(String[] args) {
     
     // Race 1: Standard 3 Horses
-    Race race1 = new Race(20);
-    Horse h1 = new Horse('B', "Bolt", 0.8);
-    Horse h2 = new Horse('F', "Flash", 0.6);
-    Horse h3 = new Horse('S', "Storm", 0.7);
+    Race race1 = new Race(20,3);
+    Horse h1 = new Horse('♘', "Bolt", 0.8);
+    Horse h2 = new Horse('♘', "Flash", 0.6);
+    Horse h3 = new Horse('♘', "Storm", 0.7);
     race1.addHorse(h1, 1);
     race1.addHorse(h2, 2);
     race1.addHorse(h3, 3);
     race1.startRace();
 
     // Race 2: Empty and Extra Lanes
-    Race race2 = new Race(20);
+    Race race2 = new Race(20,5);
     race2.addHorse(h1, 1); // valid
     race2.addHorse(h2, 2); // valid
     race2.addHorse(h1, 4); // same horse reused

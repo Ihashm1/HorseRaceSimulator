@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.SwingUtilities;
 
 public class TrackDesigner {
 
@@ -9,19 +10,21 @@ public class TrackDesigner {
     static JLabel resultLabel;
     static JTextArea raceOutputArea;
 
-    public static void main(String[] args) {
-        JFrame frame = createFrame();
-        JPanel mainPanel = new JPanel(new BorderLayout());
-        JPanel inputPanel = createInputPanel();
-        JPanel controlPanel = createControlPanel();
-        JScrollPane outputPanel = createOutputPanel(); // <-- NEW
+        public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = createFrame();
+            JPanel mainPanel = new JPanel(new BorderLayout());
+            JPanel inputPanel = createInputPanel();
+            JPanel controlPanel = createControlPanel();
+            JScrollPane outputPanel = createOutputPanel();
 
-        mainPanel.add(inputPanel, BorderLayout.NORTH);
-        mainPanel.add(controlPanel, BorderLayout.CENTER);
-        mainPanel.add(outputPanel, BorderLayout.SOUTH); // <-- NEW
+            mainPanel.add(inputPanel, BorderLayout.NORTH);
+            mainPanel.add(controlPanel, BorderLayout.CENTER);
+            mainPanel.add(outputPanel, BorderLayout.SOUTH);
 
-        frame.add(mainPanel);
-        frame.setVisible(true);
+            frame.add(mainPanel);
+            frame.setVisible(true);
+        });
     }
 
     private static JFrame createFrame() {
@@ -82,5 +85,27 @@ public class TrackDesigner {
         } catch (NumberFormatException ex) {
             resultLabel.setText("Please enter valid numbers.");
         }
+    }
+
+    private static void runRaceSimulation(int lanes, int length) {
+    Race race = new Race(length, lanes);
+
+    for (int i = 1; i <= lanes; i++) {
+        // Generate dummy horses with different names and confidence
+        Horse h = new Horse((char) ('A' + i - 1), "Horse" + i, 0.5 + (i * 0.05));
+        race.addHorse(h, i);
+    }
+
+    // Capture console output
+    java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+    java.io.PrintStream ps = new java.io.PrintStream(baos);
+    java.io.PrintStream old = System.out;
+    System.setOut(ps);
+
+    race.startRace();
+
+    System.out.flush();
+    System.setOut(old);
+    raceOutputArea.setText(baos.toString());
     }
 }
