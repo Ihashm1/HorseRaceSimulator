@@ -202,7 +202,7 @@ class RacePanel extends JPanel  {
             int x = margin + h.getDistanceTravelled() * 20;
             String symbol = h.hasFallen() ? "❌" : String.valueOf(h.getSymbol());
             g.drawString(symbol, x, y + 20);
-            g.drawString(h.getName(), x + 20, y + 20);
+            g.drawString(h.getName() + " (Conf: " + String.format("%.2f", h.getConfidence()) + ")", x + 20, y + 20);
         }
     }
 }
