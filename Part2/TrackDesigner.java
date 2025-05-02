@@ -21,17 +21,24 @@ public class TrackDesigner {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = createFrame();
             JPanel mainPanel = new JPanel(new BorderLayout());
+            JPanel leftPanel = new JPanel(new BorderLayout()); // For input + controls
+
             JPanel inputPanel = createInputPanel();
             JPanel controlPanel = createControlPanel();
-            JPanel outputPanel = createOutputPanel();
+            JPanel outputPanel = createOutputPanel(); // This is RacePanel
 
+            leftPanel.add(inputPanel, BorderLayout.NORTH);
+            leftPanel.add(controlPanel, BorderLayout.CENTER);
 
-            mainPanel.add(inputPanel, BorderLayout.NORTH);
-            mainPanel.add(controlPanel, BorderLayout.CENTER);
-            mainPanel.add(outputPanel, BorderLayout.SOUTH);
+            mainPanel.add(leftPanel, BorderLayout.WEST);    // Settings on the LEFT
+            mainPanel.add(outputPanel, BorderLayout.CENTER); // Race on the RIGHT
 
             frame.add(mainPanel);
             frame.setVisible(true);
+
+            leftPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            racePanel.setPreferredSize(new Dimension(600, 400));
+            
         });
     }
 
