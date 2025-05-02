@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.SwingUtilities;
 import java.util.concurrent.TimeUnit;
+import java.util.Random;
 
 
 
@@ -23,24 +24,6 @@ public class TrackDesigner {
             JPanel inputPanel = createInputPanel();
             JPanel controlPanel = createControlPanel();
             JPanel outputPanel = createOutputPanel();
-
-
-
-                mainPanel.setFocusable(true);
-                mainPanel.requestFocusInWindow();
-                mainPanel.addKeyListener(new KeyAdapter() {
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                            currentWeatherIndex = (currentWeatherIndex - 1 + WeatherCondition.CONDITIONS.length) % WeatherCondition.CONDITIONS.length;
-                        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                            currentWeatherIndex = (currentWeatherIndex + 1) % WeatherCondition.CONDITIONS.length;
-                        }
-                        selectedWeather = WeatherCondition.CONDITIONS[currentWeatherIndex];
-                        resultLabel.setText("Weather: " + selectedWeather.getName());
-                    }
-                });
-
 
 
             mainPanel.add(inputPanel, BorderLayout.NORTH);
@@ -104,6 +87,9 @@ public class TrackDesigner {
     try {
         int lanes = Integer.parseInt(laneText);
         int length = Integer.parseInt(lengthText);
+        // Randomly assign weather condition
+        Random rand = new Random();
+        selectedWeather = WeatherCondition.CONDITIONS[rand.nextInt(WeatherCondition.CONDITIONS.length)];
         resultLabel.setText("Track: " + lanes + " lanes, " + length + " units | Weather: " + selectedWeather.getName());
 
         String[] horseNames = promptHorseNames(lanes);
@@ -113,12 +99,6 @@ public class TrackDesigner {
       resultLabel.setText("Please enter valid numbers.");
     }
     }
-
-    private static WeatherCondition switchWeather(int direction) {
-    WeatherCondition[] values = WeatherCondition.values();
-    int index = (selectedWeather.ordinal() + direction + values.length) % values.length;
-    return values[index];
-        }
 
     private static String[] promptHorseNames(int lanes) {
     String[] names = new String[lanes];
@@ -139,7 +119,8 @@ public class TrackDesigner {
     Horse[] horses = new Horse[lanes];
 
     for (int i = 0; i < lanes; i++) {
-    horses[i] = new Horse('♘', horseNames[i], 0.5 + (i * 0.05));
+    double confidence = selectedWeather.getBaseConfidence() + (i * 0.05);
+    horses[i] = new Horse('♘', horseNames[i], confidence);
     race.addHorse(horses[i], i + 1);
     }
 
@@ -159,8 +140,10 @@ public class TrackDesigner {
 
             for (Horse h : horses) {
                 if (!h.hasFallen() && Math.random() < h.getConfidence()) {
+                for (int m = 0; m < selectedWeather.getSpeedMultiplier(); m++) {
                     h.moveForward();
                 }
+}
                 if (!h.hasFallen() && Math.random() < (0.1 * h.getConfidence() * h.getConfidence())) {
                     h.fall();
                 }
