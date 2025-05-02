@@ -4,12 +4,17 @@ import java.awt.event.*;
 import javax.swing.SwingUtilities;
 import java.util.concurrent.TimeUnit;
 
+
+
 public class TrackDesigner {
 
+    
     static JTextField laneInput;
     static JTextField lengthInput;
     static JLabel resultLabel;
     static RacePanel racePanel;
+    static WeatherCondition selectedWeather = WeatherCondition.DRY;
+    static int currentWeatherIndex = 0;
 
         public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
