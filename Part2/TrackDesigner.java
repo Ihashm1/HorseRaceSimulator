@@ -82,7 +82,7 @@ public class TrackDesigner {
         int length = Integer.parseInt(lengthText);
         resultLabel.setText("Track: " + lanes + " lanes, " + length + " units");
 
-        rString[] horseNames = promptHorseNames(lanes);
+        String[] horseNames = promptHorseNames(lanes);
         runRaceSimulation(lanes, length, horseNames);
 
     } catch (NumberFormatException ex) {
@@ -104,13 +104,13 @@ public class TrackDesigner {
     return names;
     }
 
-    private static void runRaceSimulation(int lanes, int length) {
+    private static void runRaceSimulation(int lanes, int length, String[] horseNames) {
     Race race = new Race(length, lanes);
     Horse[] horses = new Horse[lanes];
 
     for (int i = 0; i < lanes; i++) {
-        horses[i] = new Horse('♘', "Horse" + (i + 1), 0.5 + (i * 0.05));
-        race.addHorse(horses[i], i + 1);
+    horses[i] = new Horse('♘', horseNames[i], 0.5 + (i * 0.05));
+    race.addHorse(horses[i], i + 1);
     }
 
     // Setup the panel for drawing
