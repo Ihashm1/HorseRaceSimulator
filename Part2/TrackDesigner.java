@@ -115,6 +115,40 @@ public class TrackDesigner {
     }
     }
 
+    private static ArrayList<HorseConfig> getHorseConfigs(int lanes) {
+            ArrayList<HorseConfig> configs = new ArrayList<>();
+            CustomisationPanel cp = ((CustomisationPanel)((JPanel)((JPanel)((JFrame) SwingUtilities.getWindowAncestor(racePanel)).getContentPane().getComponent(0)).getComponent(0)).getComponent(0));
+
+            for (int i = 0; i < lanes; i++) {
+                String name = JOptionPane.showInputDialog(null, "Enter name for Horse " + (i + 1) + ":");
+                if (name == null || name.trim().isEmpty()) name = "Horse" + (i + 1);
+
+                String symbol = (String) cp.symbolBox.getSelectedItem();
+                int speedBonus = 0;
+                double confidenceBonus = 0;
+
+                // Breed logic
+                String breed = (String) cp.breedBox.getSelectedItem();
+                if (breed.contains("Thoroughbred")) { speedBonus += 5; confidenceBonus -= 1; }
+                if (breed.contains("Quarter Horse")) { confidenceBonus += 5; confidenceBonus -= 1; }
+                if (breed.contains("Arabian")) { speedBonus += 3; confidenceBonus += 2; }
+                if (breed.contains("French Trotter")) { speedBonus += 2; confidenceBonus += 3; }
+                if (breed.contains("Shetland Pony")) { confidenceBonus += 4; }
+
+                // Equipment logic
+                if (cp.saddleBox.getSelectedItem().toString().contains("+15 confidence")) confidenceBonus += 15;
+                if (cp.horseshoeBox.getSelectedItem().toString().contains("Horseshoe")) {
+                    speedBonus += 5;
+                    confidenceBonus += 10;
+                }
+                if (cp.bridleBox.getSelectedItem().toString().contains("Bridle")) speedBonus += 15;
+
+                configs.add(new HorseConfig(name, symbol, speedBonus, confidenceBonus));
+            }
+
+            return configs;
+        }
+
     private static String[] promptHorseNames(int lanes) {
     String[] names = new String[lanes];
 
