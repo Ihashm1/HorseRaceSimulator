@@ -19,47 +19,35 @@ public class TrackDesigner {
 
         public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = createFrame();
-            JPanel mainPanel = new JPanel(new BorderLayout());
+                JFrame frame = createFrame();
+                JPanel mainPanel = new JPanel(new BorderLayout());
 
-            // Left-side vertical stack (customisation + input)
-            JPanel leftSidePanel = new JPanel();
-            leftSidePanel.setLayout(new BoxLayout(leftSidePanel, BoxLayout.Y_AXIS));
+                // Left-side vertical stack (customisation + input)
+                JPanel leftSidePanel = new JPanel();
+                leftSidePanel.setLayout(new BoxLayout(leftSidePanel, BoxLayout.Y_AXIS));
 
-            // CustomisationPanel here
-            CustomisationPanel customPanel = new CustomisationPanel();
-            leftSidePanel.add(customPanel);
+                CustomisationPanel customPanel = new CustomisationPanel();
+                leftSidePanel.add(customPanel);
 
-            // existing input + control panels
-            JPanel inputPanel = createInputPanel();
-            JPanel controlPanel = createControlPanel();
-            leftSidePanel.add(inputPanel);
-            leftSidePanel.add(controlPanel);
+                JPanel inputPanel = createInputPanel();
+                JPanel controlPanel = createControlPanel();
+                leftSidePanel.add(inputPanel);
+                leftSidePanel.add(controlPanel);
 
-            // race output stays on the right
-            JPanel outputPanel = createOutputPanel();
+                // Right: race output
+                JPanel outputPanel = createOutputPanel();
 
-            mainPanel.add(leftSidePanel, BorderLayout.WEST);
-            mainPanel.add(outputPanel, BorderLayout.CENTER);
+                mainPanel.add(leftSidePanel, BorderLayout.WEST);
+                mainPanel.add(outputPanel, BorderLayout.CENTER);
 
-            JPanel inputPanel = createInputPanel();
-            JPanel controlPanel = createControlPanel();
-            JPanel outputPanel = createOutputPanel(); // This is RacePanel
+                frame.add(mainPanel);
+                frame.setVisible(true);
 
-            leftPanel.add(inputPanel, BorderLayout.NORTH);
-            leftPanel.add(controlPanel, BorderLayout.CENTER);
-
-            mainPanel.add(leftPanel, BorderLayout.WEST);    // Settings on the LEFT
-            mainPanel.add(outputPanel, BorderLayout.CENTER); // Race on the RIGHT
-
-            frame.add(mainPanel);
-            frame.setVisible(true);
-
-            leftPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            racePanel.setPreferredSize(new Dimension(600, 400));
+                leftSidePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+                racePanel.setPreferredSize(new Dimension(600, 400));
             
-        });
-    }
+           });
+       }
 
     private static JFrame createFrame() {
         JFrame frame = new JFrame("Horse Race Track Designer");

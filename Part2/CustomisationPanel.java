@@ -56,4 +56,17 @@ public class CustomisationPanel extends JPanel {
         add(new JLabel("Bridle:"));
         add(bridleBox);
     }
+
+    public HorseCustomisation getSelectedCustomisation() {
+    HorseCustomisation customisation = new HorseCustomisation();
+
+    customisation.breed = (String) breedBox.getSelectedItem();
+    customisation.coatColour = (String) coatBox.getSelectedItem();
+    customisation.symbol = ((String) symbolBox.getSelectedItem()).charAt(0);
+    customisation.hasSaddle = saddleBox.getSelectedIndex() == 1;
+    customisation.hasHorseshoe = horseshoeBox.getSelectedIndex() == 1;
+    customisation.hasBridle = bridleBox.getSelectedIndex() == 1;
+
+    return customisation;
+}
 }
