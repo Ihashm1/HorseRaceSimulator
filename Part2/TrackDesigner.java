@@ -21,7 +21,26 @@ public class TrackDesigner {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = createFrame();
             JPanel mainPanel = new JPanel(new BorderLayout());
-            JPanel leftPanel = new JPanel(new BorderLayout()); // For input + controls
+
+            // Left-side vertical stack (customisation + input)
+            JPanel leftSidePanel = new JPanel();
+            leftSidePanel.setLayout(new BoxLayout(leftSidePanel, BoxLayout.Y_AXIS));
+
+            // CustomisationPanel here
+            CustomisationPanel customPanel = new CustomisationPanel();
+            leftSidePanel.add(customPanel);
+
+            // existing input + control panels
+            JPanel inputPanel = createInputPanel();
+            JPanel controlPanel = createControlPanel();
+            leftSidePanel.add(inputPanel);
+            leftSidePanel.add(controlPanel);
+
+            // race output stays on the right
+            JPanel outputPanel = createOutputPanel();
+
+            mainPanel.add(leftSidePanel, BorderLayout.WEST);
+            mainPanel.add(outputPanel, BorderLayout.CENTER);
 
             JPanel inputPanel = createInputPanel();
             JPanel controlPanel = createControlPanel();
