@@ -143,7 +143,8 @@ public class TrackDesigner {
             }
             if (cp.bridleBox.getSelectedItem().toString().contains("Bridle")) speedBonus += 0.15;
 
-            configs.add(new HorseConfig(name, symbol, speedBonus, confidenceBonus));
+            String coatColor = (String) cp.coatBox.getSelectedItem();
+            configs.add(new HorseConfig(name, symbol, speedBonus, confidenceBonus, coatColor));
         }
 
             return configs;
@@ -176,7 +177,7 @@ public class TrackDesigner {
         race.addHorse(h, i + 1);
     }
 
-    racePanel.setupRace(horses, length);
+    racePanel.setupRace(horses, length, horseConfigs);
 
     new Thread(() -> {
         boolean finished = false;
@@ -233,10 +234,15 @@ public class TrackDesigner {
 class RacePanel extends JPanel  {
     private Horse[] horses;
     private int trackLength;
+    private String[] horseCoatColors;
 
-    public void setupRace(Horse[] horses, int trackLength) {
+    public void setupRace(Horse[] horses, int trackLength, ArrayList<HorseConfig> configs) {
         this.horses = horses;
         this.trackLength = trackLength;
+        this.horseCoatColors = new String[horses.length];
+        for (int i = 0; i < configs.size(); i++) {
+            this.horseCoatColors[i] = configs.get(i).coatColor;
+        }
         repaint();
     }
 
