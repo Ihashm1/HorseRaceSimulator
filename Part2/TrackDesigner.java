@@ -265,8 +265,23 @@ class RacePanel extends JPanel  {
         String currentSymbol = h.hasFallen() ? "❌" : symbol;
 
         g.drawString(symbol, margin - 15, y + 20); // Fixed symbol at lane start
-        g.drawString(currentSymbol, x, y + 20); // Moving race symbol
+        Color coat = getColorFromName(horseCoatColors[i]);
+        g.setColor(coat);
+        g.fillOval(x, y + 5, 20, 20); // draw colored body
+        g.setColor(Color.BLACK);
+        g.drawString(h.getName() + " (Conf: " + String.format("%.2f", h.getConfidence()) + ")", x + 30, y + 20);
         g.drawString(h.getName() + " (Conf: " + String.format("%.2f", h.getConfidence()) + ")", x + 20, y + 20);
                 }
             }
+
+        private Color getColorFromName(String name) {
+        switch (name.toLowerCase()) {
+        case "black": return Color.BLACK;
+        case "white": return Color.WHITE;
+        case "brown": return new Color(139, 69, 19);
+        case "grey": return Color.GRAY;
+        case "pink": return Color.PINK;
+        default: return Color.DARK_GRAY;
+    }
+}
 }
