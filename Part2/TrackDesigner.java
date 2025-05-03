@@ -270,7 +270,6 @@ class RacePanel extends JPanel  {
         g.fillOval(x, y + 5, 20, 20); // draw colored body
         g.setColor(Color.BLACK);
         g.drawString(h.getName() + " (Conf: " + String.format("%.2f", h.getConfidence()) + ")", x + 30, y + 20);
-        g.drawString(h.getName() + " (Conf: " + String.format("%.2f", h.getConfidence()) + ")", x + 20, y + 20);
                 }
             }
 
