@@ -106,44 +106,26 @@ public class TrackDesigner {
         selectedWeather = WeatherCondition.CONDITIONS[rand.nextInt(WeatherCondition.CONDITIONS.length)];
         resultLabel.setText("Track: " + lanes + " lanes, " + length + " units | Weather: " + selectedWeather.getName());
 
-        String[] horseNames = new String[lanes];
-        HorseCustomisation[] customisations = promptHorseCustomisations(lanes, horseNames);
-        runRaceSimulation(lanes, length, horseNames, customisations);
+        String[] horseNames = promptHorseNames(lanes);
+        runRaceSimulation(lanes, length, horseNames);
 
     } catch (NumberFormatException ex) {
       resultLabel.setText("Please enter valid numbers.");
     }
     }
 
-    private static HorseCustomisation[] promptHorseCustomisations(int lanes, String[] horseNames) {
-    HorseCustomisation[] customisations = new HorseCustomisation[lanes];
+    private static String[] promptHorseNames(int lanes) {
+    String[] names = new String[lanes];
 
     for (int i = 0; i < lanes; i++) {
-        JTextField nameField = new JTextField("Horse" + (i + 1));
-        CustomisationPanel customPanel = new CustomisationPanel();
-
-        JPanel dialogPanel = new JPanel(new BorderLayout());
-        dialogPanel.add(new JLabel("Enter name and customise Horse " + (i + 1) + ":"), BorderLayout.NORTH);
-        dialogPanel.add(nameField, BorderLayout.CENTER);
-        dialogPanel.add(customPanel, BorderLayout.SOUTH);
-
-        int result = JOptionPane.showConfirmDialog(null, dialogPanel, "Customise Horse " + (i + 1),
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-        if (result == JOptionPane.OK_OPTION) {
-            String name = nameField.getText().trim();
-            if (name.isEmpty()) {
-                name = "Horse" + (i + 1);
-            }
-            horseNames[i] = name;
-            customisations[i] = customPanel.getSelectedCustomisation();
-        } else {
-            horseNames[i] = "Horse" + (i + 1);
-            customisations[i] = new HorseCustomisation(); // default values
+        String name = JOptionPane.showInputDialog(null, "Enter name for Horse " + (i + 1) + ":");
+        if (name == null || name.trim().isEmpty()) {
+            name = "Horse" + (i + 1); // fallback name
         }
+        names[i] = name;
     }
 
-    return customisations;
+    return names;
     }
 
     private static void runRaceSimulation(int lanes, int length, String[] horseNames) {

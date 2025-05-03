@@ -16,14 +16,14 @@ public class CustomisationPanel extends JPanel {
 
         // Breed
         breedBox = new JComboBox<>(new String[] {
-            "Thoroughbred", "Quarter Horse", "Arabian", "French Trotter", "Shetland Pony"
+            "Thoroughbred (+5 speed, -1 confidence)", "Quarter Horse (+5 confidence, -1 confidence)", "Arabian (+3 speed, +2 confidence)", "French Trotter (+3 confidence, + 2 speed)", "Shetland Pony (+4 confidence)"
         });
         add(new JLabel("Breed:"));
         add(breedBox);
 
         // Coat Colour
         coatBox = new JComboBox<>(new String[] {
-            "Black", "White", "Brown", "Grey", "Spotted"
+            "Black", "White", "Brown", "Grey", "pink"
         });
         add(new JLabel("Coat Colour:"));
         add(coatBox);
@@ -37,7 +37,7 @@ public class CustomisationPanel extends JPanel {
 
         // Saddle
         saddleBox = new JComboBox<>(new String[] {
-            "None", "Saddle (+20 confidence)"
+            "None", "Saddle (+15 confidence)"
         });
         add(new JLabel("Saddle:"));
         add(saddleBox);
@@ -51,22 +51,10 @@ public class CustomisationPanel extends JPanel {
 
         // Bridle
         bridleBox = new JComboBox<>(new String[] {
-            "None", "Bridle (+15 confidence)"
+            "None", "Bridle (+15 speed)"
         });
         add(new JLabel("Bridle:"));
         add(bridleBox);
     }
 
-    public HorseCustomisation getSelectedCustomisation() {
-    HorseCustomisation customisation = new HorseCustomisation();
-
-    customisation.breed = (String) breedBox.getSelectedItem();
-    customisation.coatColour = (String) coatBox.getSelectedItem();
-    customisation.symbol = ((String) symbolBox.getSelectedItem()).charAt(0);
-    customisation.hasSaddle = saddleBox.getSelectedIndex() == 1;
-    customisation.hasHorseshoe = horseshoeBox.getSelectedIndex() == 1;
-    customisation.hasBridle = bridleBox.getSelectedIndex() == 1;
-
-    return customisation;
-}
 }
