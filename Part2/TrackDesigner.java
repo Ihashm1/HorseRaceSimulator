@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.SwingUtilities;
 import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -106,8 +107,8 @@ public class TrackDesigner {
         selectedWeather = WeatherCondition.CONDITIONS[rand.nextInt(WeatherCondition.CONDITIONS.length)];
         resultLabel.setText("Track: " + lanes + " lanes, " + length + " units | Weather: " + selectedWeather.getName());
 
-        String[] horseNames = promptHorseNames(lanes);
-        runRaceSimulation(lanes, length, horseNames);
+        ArrayList<HorseConfig> horseConfigs = getHorseConfigs(lanes);
+        runRaceSimulation(length, horseConfigs);
 
     } catch (NumberFormatException ex) {
       resultLabel.setText("Please enter valid numbers.");
@@ -128,7 +129,7 @@ public class TrackDesigner {
     return names;
     }
 
-    private static void runRaceSimulation(int lanes, int length, String[] horseNames) {
+    private static void runRaceSimulation(int length, ArrayList<HorseConfig> horseConfigs) {
     Race race = new Race(length, lanes);
     Horse[] horses = new Horse[lanes];
 
