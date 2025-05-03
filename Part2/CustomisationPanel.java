@@ -30,7 +30,7 @@ public class CustomisationPanel extends JPanel {
 
         // Symbol
         symbolBox = new JComboBox<>(new String[] {
-            "🦄", "🐎", "🐴", "♘", "♞"
+            "♘", "♞"
         });
         add(new JLabel("Symbol:"));
         add(symbolBox);

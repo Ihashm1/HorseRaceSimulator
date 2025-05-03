@@ -27,9 +27,6 @@ public class TrackDesigner {
                 JPanel leftSidePanel = new JPanel();
                 leftSidePanel.setLayout(new BoxLayout(leftSidePanel, BoxLayout.Y_AXIS));
 
-                CustomisationPanel customPanel = new CustomisationPanel();
-                leftSidePanel.add(customPanel);
-
                 JPanel inputPanel = createInputPanel();
                 JPanel controlPanel = createControlPanel();
                 leftSidePanel.add(inputPanel);
@@ -117,34 +114,37 @@ public class TrackDesigner {
 
     private static ArrayList<HorseConfig> getHorseConfigs(int lanes) {
             ArrayList<HorseConfig> configs = new ArrayList<>();
-            CustomisationPanel cp = ((CustomisationPanel)((JPanel)((JPanel)((JFrame) SwingUtilities.getWindowAncestor(racePanel)).getContentPane().getComponent(0)).getComponent(0)).getComponent(0));
-
             for (int i = 0; i < lanes; i++) {
-                String name = JOptionPane.showInputDialog(null, "Enter name for Horse " + (i + 1) + ":");
-                if (name == null || name.trim().isEmpty()) name = "Horse" + (i + 1);
+            String name = JOptionPane.showInputDialog(null, "Enter name for Horse " + (i + 1) + ":");
+            if (name == null || name.trim().isEmpty()) name = "Horse" + (i + 1);
 
-                String symbol = (String) cp.symbolBox.getSelectedItem();
-                int speedBonus = 0;
-                double confidenceBonus = 0;
+            // Open a customisation panel for this horse
+            CustomisationPanel cp = new CustomisationPanel();
+            int result = JOptionPane.showConfirmDialog(null, cp, "Customise " + name, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            if (result != JOptionPane.OK_OPTION) continue;
 
-                // Breed logic
-                String breed = (String) cp.breedBox.getSelectedItem();
-                if (breed.contains("Thoroughbred")) { speedBonus += 0.5; confidenceBonus -= 0.1; }
-                if (breed.contains("Quarter Horse")) { confidenceBonus += 0.5; confidenceBonus -= 0.1; }
-                if (breed.contains("Arabian")) { speedBonus += 0.3; confidenceBonus += 0.2; }
-                if (breed.contains("French Trotter")) { speedBonus += 0.2; confidenceBonus += 0.3; }
-                if (breed.contains("Shetland Pony")) { confidenceBonus += 0.4; }
+            String symbol = (String) cp.symbolBox.getSelectedItem();
+            int speedBonus = 0;
+            double confidenceBonus = 0;
 
-                // Equipment logic
-                if (cp.saddleBox.getSelectedItem().toString().contains("+15 confidence")) confidenceBonus += 0.15;
-                if (cp.horseshoeBox.getSelectedItem().toString().contains("Horseshoe")) {
-                    speedBonus += 0.5;
-                    confidenceBonus += 0.1;
-                }
-                if (cp.bridleBox.getSelectedItem().toString().contains("Bridle")) speedBonus += 0.15;
+            // Breed logic
+            String breed = (String) cp.breedBox.getSelectedItem();
+            if (breed.contains("Thoroughbred")) { speedBonus += 0.5; confidenceBonus -= 0.1; }
+            if (breed.contains("Quarter Horse")) { confidenceBonus += 0.5; confidenceBonus -= 0.1; }
+            if (breed.contains("Arabian")) { speedBonus += 0.3; confidenceBonus += 0.2; }
+            if (breed.contains("French Trotter")) { speedBonus += 0.2; confidenceBonus += 0.3; }
+            if (breed.contains("Shetland Pony")) { confidenceBonus += 0.4; }
 
-                configs.add(new HorseConfig(name, symbol, speedBonus, confidenceBonus));
+            // Equipment logic
+            if (cp.saddleBox.getSelectedItem().toString().contains("+15 confidence")) confidenceBonus += 0.15;
+            if (cp.horseshoeBox.getSelectedItem().toString().contains("Horseshoe")) {
+                speedBonus += 0.5;
+                confidenceBonus += 0.1;
             }
+            if (cp.bridleBox.getSelectedItem().toString().contains("Bridle")) speedBonus += 0.15;
+
+            configs.add(new HorseConfig(name, symbol, speedBonus, confidenceBonus));
+        }
 
             return configs;
         }
@@ -255,9 +255,12 @@ class RacePanel extends JPanel  {
             g.drawLine(margin, y + 20, margin + trackLength * 20, y + 20); // lane line
 
             int x = margin + h.getDistanceTravelled() * 20;
-            String symbol = h.hasFallen() ? "❌" : String.valueOf(h.getSymbol());
-            g.drawString(symbol, x, y + 20);
-            g.drawString(h.getName() + " (Conf: " + String.format("%.2f", h.getConfidence()) + ")", x + 20, y + 20);
-        }
-    }
+            String symbol = String.valueOf(h.getSymbol());
+        String currentSymbol = h.hasFallen() ? "❌" : symbol;
+
+        g.drawString(symbol, margin - 15, y + 20); // Fixed symbol at lane start
+        g.drawString(currentSymbol, x, y + 20); // Moving race symbol
+        g.drawString(h.getName() + " (Conf: " + String.format("%.2f", h.getConfidence()) + ")", x + 20, y + 20);
+                }
+            }
 }
