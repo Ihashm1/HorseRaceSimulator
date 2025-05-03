@@ -129,19 +129,19 @@ public class TrackDesigner {
 
                 // Breed logic
                 String breed = (String) cp.breedBox.getSelectedItem();
-                if (breed.contains("Thoroughbred")) { speedBonus += 5; confidenceBonus -= 1; }
-                if (breed.contains("Quarter Horse")) { confidenceBonus += 5; confidenceBonus -= 1; }
-                if (breed.contains("Arabian")) { speedBonus += 3; confidenceBonus += 2; }
-                if (breed.contains("French Trotter")) { speedBonus += 2; confidenceBonus += 3; }
-                if (breed.contains("Shetland Pony")) { confidenceBonus += 4; }
+                if (breed.contains("Thoroughbred")) { speedBonus += 0.5; confidenceBonus -= 0.1; }
+                if (breed.contains("Quarter Horse")) { confidenceBonus += 0.5; confidenceBonus -= 0.1; }
+                if (breed.contains("Arabian")) { speedBonus += 0.3; confidenceBonus += 0.2; }
+                if (breed.contains("French Trotter")) { speedBonus += 0.2; confidenceBonus += 0.3; }
+                if (breed.contains("Shetland Pony")) { confidenceBonus += 0.4; }
 
                 // Equipment logic
-                if (cp.saddleBox.getSelectedItem().toString().contains("+15 confidence")) confidenceBonus += 15;
+                if (cp.saddleBox.getSelectedItem().toString().contains("+15 confidence")) confidenceBonus += 0.15;
                 if (cp.horseshoeBox.getSelectedItem().toString().contains("Horseshoe")) {
-                    speedBonus += 5;
-                    confidenceBonus += 10;
+                    speedBonus += 0.5;
+                    confidenceBonus += 0.1;
                 }
-                if (cp.bridleBox.getSelectedItem().toString().contains("Bridle")) speedBonus += 15;
+                if (cp.bridleBox.getSelectedItem().toString().contains("Bridle")) speedBonus += 0.15;
 
                 configs.add(new HorseConfig(name, symbol, speedBonus, confidenceBonus));
             }
@@ -164,77 +164,67 @@ public class TrackDesigner {
     }
 
     private static void runRaceSimulation(int length, ArrayList<HorseConfig> horseConfigs) {
+    int lanes = horseConfigs.size();
     Race race = new Race(length, lanes);
     Horse[] horses = new Horse[lanes];
 
     for (int i = 0; i < lanes; i++) {
-    double confidence = selectedWeather.getBaseConfidence() + (i * 0.05);
-    horses[i] = new Horse('♘', horseNames[i], confidence);
-    race.addHorse(horses[i], i + 1);
+        HorseConfig config = horseConfigs.get(i);
+        double confidence = selectedWeather.getBaseConfidence() + config.confidenceBonus;
+        Horse h = new Horse(config.symbol.charAt(0), config.name, confidence);
+        horses[i] = h;
+        race.addHorse(h, i + 1);
     }
 
-    // Setup the panel for drawing
     racePanel.setupRace(horses, length);
 
-    // Run the race in a separate thread
     new Thread(() -> {
         boolean finished = false;
 
         while (!finished) {
-            try {
-                TimeUnit.MILLISECONDS.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            try { TimeUnit.MILLISECONDS.sleep(100); } catch (InterruptedException e) {}
 
-            for (Horse h : horses) {
+            for (int i = 0; i < horses.length; i++) {
+                Horse h = horses[i];
+                HorseConfig config = horseConfigs.get(i);
+
                 if (!h.hasFallen() && Math.random() < h.getConfidence()) {
-                for (int m = 0; m < selectedWeather.getSpeedMultiplier(); m++) {
-                    h.moveForward();
+                    int totalSpeed = (int)(selectedWeather.getSpeedMultiplier() + config.speedBonus);
+                    for (int m = 0; m < totalSpeed; m++) h.moveForward();
                 }
-}
-                if (!h.hasFallen() && Math.random() < (0.1 * h.getConfidence() * h.getConfidence())) {
-                    h.fall();
-                }
+
+                if (!h.hasFallen() && Math.random() < (0.1 * h.getConfidence() * h.getConfidence())) h.fall();
             }
 
             racePanel.repaint();
 
             boolean someoneWon = false;
-            for (Horse h : horses) {
-                if (h.getDistanceTravelled() >= length) {
-                    someoneWon = true;
-                    break;
-                }
-            }
-
             boolean allFallen = true;
+
             for (Horse h : horses) {
-                if (!h.hasFallen()) {
-                    allFallen = false;
-                    break;
-                }
+                if (h.getDistanceTravelled() >= length) someoneWon = true;
+                if (!h.hasFallen()) allFallen = false;
             }
 
             finished = someoneWon || allFallen;
 
-            // Determine and display race result
-        String message;
-        if (someoneWon) {
-            // Find first horse that finished
-            for (Horse h : horses) {
-                if (h.getDistanceTravelled() >= length) {
-                    message = "🏆 Winner: " + h.getName();
+            if (finished) {
+                String message;
+                if (someoneWon) {
+                    for (Horse h : horses) {
+                        if (h.getDistanceTravelled() >= length) {
+                            message = "🏆 Winner: " + h.getName();
+                            JOptionPane.showMessageDialog(null, message);
+                            break;
+                        }
+                    }
+                } else {
+                    message = "💥 All horses have fallen! No winner!";
                     JOptionPane.showMessageDialog(null, message);
-                    break;
                 }
             }
-        } else if (allFallen) {
-            message = "💥 All horses have fallen! No winner!";
-            JOptionPane.showMessageDialog(null, message);
         }
-                }
-            }).start();
+    }).start();
     }
 
 }
