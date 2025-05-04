@@ -33,8 +33,11 @@ This will execute the startRace() method within the main() method in Race.java.
 To change horse names or add/remove horses, modify the main() method in Race.java. For example:
 
 Race race1 = new Race(20); // specify race length
+
 Horse h1 = new Horse('B', "Bolt", 0.8);
+
 race1.addHorse(h1, 1); // specifies horse and lane number assigned
+
 race1.startRace(); // begins the race
 
 ---
@@ -66,18 +69,20 @@ The first to reach the finish wins. If all horses fall, no one wins.
 
 
 📊 Stats Tab
+
 After each race, performance is logged in the Stats tab (top-left corner). Tracked metrics include:
 
-Races Run
-Wins
-Falls
-Best Time
-Worst Time
-Average Speed
-Average Confidence
-Win Ratio
+* Races Run
+* Wins
+* Falls
+* Best Time
+* Worst Time
+* Average Speed
+* Average Confidence
+* Win Ratio
 
 You can run the race as many times as you like—stats are cumulative during the session.
 
-
-
+---
+Future Developments:
+Betting system with odds calcualted per horse
