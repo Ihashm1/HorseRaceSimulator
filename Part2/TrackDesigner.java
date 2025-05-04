@@ -5,6 +5,8 @@ import javax.swing.SwingUtilities;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.table.DefaultTableModel;
+import java.util.HashMap;
 
 
 
@@ -17,6 +19,12 @@ public class TrackDesigner {
     static RacePanel racePanel;
     static WeatherCondition selectedWeather = WeatherCondition.DRY;
     static int currentWeatherIndex = 0;
+
+    // stats variables
+    static JTabbedPane tabbedPane;
+    static JTable statsTable;
+    static DefaultTableModel statsModel;
+    static HashMap<String, HorseStats> horseStatsMap = new HashMap<>();
 
         public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -43,6 +51,13 @@ public class TrackDesigner {
 
                 leftSidePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
                 racePanel.setPreferredSize(new Dimension(600, 400));
+
+                // creating stats tab
+                tabbedPane = new JTabbedPane();
+                tabbedPane.addTab("Race", mainPanel);
+                tabbedPane.addTab("Stats", createStatsTab());
+
+                frame.add(tabbedPane);
             
            });
        }
