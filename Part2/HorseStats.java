@@ -8,13 +8,13 @@ import java.util.*;
 public class HorseStats {
 
     // Attributes to track horse statistics
-    private int races;                // Total number of races
-    private int wins;                 // Total number of wins
-    private int falls;                // Total number of falls
+    private int races;                // Total number of races the horse has participated in
+    private int wins;                 // Total number of races the horse has won
+    private int falls;                // Total number of times the horse has fallen
     private double bestTime = Integer.MAX_VALUE; // Best race time (lower is better)
     private double worstTime = 0;     // Worst race time (higher is worse)
     private double totalTime;         // Total time across all valid races
-    private double totalConfidence;   // Total confidence across all races
+    private double totalConfidence;   // Total confidence accumulated across all races
     private double trackLength;       // Length of the track for the race
 
     /**
@@ -27,32 +27,31 @@ public class HorseStats {
      * @param trackLength The length of the track for the race.
      */
     public void recordRace(boolean won, boolean fell, double time, double confidence, double trackLength) {
-        races++;
-        if (won) wins++;
-        if (fell) falls++;
+        races++; // Increment the total number of races
+        if (won) wins++; // Increment wins if the horse won
+        if (fell) falls++; // Increment falls if the horse fell
         if (!fell) {
-            this.bestTime = Math.min(bestTime, time); // Update best time if this race is better
-            this.worstTime = Math.max(worstTime, time); // Update worst time if this race is worse
+            // Update best and worst times only if the horse did not fall
+            this.bestTime = Math.min(bestTime, time);
+            this.worstTime = Math.max(worstTime, time);
             this.totalTime += time; // Accumulate total time for valid races
             this.trackLength = trackLength; // Store the track length
         }
         totalConfidence += confidence; // Accumulate total confidence
     }
 
-    // Getters for various statistics
-
     /**
-     * @return The total number of races.
+     * @return The total number of races the horse has participated in.
      */
     public int getRaces() { return races; }
 
     /**
-     * @return The total number of wins.
+     * @return The total number of races the horse has won.
      */
     public int getWins() { return wins; }
 
     /**
-     * @return The total number of falls.
+     * @return The total number of times the horse has fallen.
      */
     public int getFalls() { return falls; }
 

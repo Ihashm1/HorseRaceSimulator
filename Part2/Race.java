@@ -186,6 +186,7 @@ public class Race
     
     /**
      * print a horse's lane during the race
+
      */
     private void printLane(Horse theHorse)
     {

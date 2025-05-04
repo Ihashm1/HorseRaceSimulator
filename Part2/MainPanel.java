@@ -1,3 +1,13 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.SwingUtilities;
+import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.Random;
+import javax.swing.table.DefaultTableModel;
+import java.util.HashMap;
+
 /**
  * MainPanel class handles the GUI and logic for the Horse Race Simulator.
  * It includes input handling, race simulation, and statistics tracking.
@@ -5,32 +15,32 @@
 public class MainPanel {
 
     // Input fields for lanes and track length
-    static JTextField laneInput;
-    static JTextField lengthInput;
+    static JTextField laneInput; // Text field for entering the number of lanes
+    static JTextField lengthInput; // Text field for entering the track length
 
     // Label to display results
-    static JLabel resultLabel;
+    static JLabel resultLabel; // Label to show the race setup details
 
     // Panel to display the race
-    static RacePanel racePanel;
+    static RacePanel racePanel; // Custom panel for rendering the race
 
     // Weather condition for the race
-    static WeatherCondition selectedWeather = WeatherCondition.DRY;
-    static int currentWeatherIndex = 0;
+    static WeatherCondition selectedWeather = WeatherCondition.DRY; // Default weather condition
+    static int currentWeatherIndex = 0; // Index to track the current weather condition
 
     // Stats variables
-    static JTabbedPane tabbedPane;
-    static JTable statsTable;
-    static DefaultTableModel statsModel;
-    static HashMap<String, HorseStats> horseStatsMap = new HashMap<>();
+    static JTabbedPane tabbedPane; // Tabbed pane for switching between race and stats views
+    static JTable statsTable; // Table to display horse statistics
+    static DefaultTableModel statsModel; // Model for managing stats table data
+    static HashMap<String, HorseStats> horseStatsMap = new HashMap<>(); // Map to store stats for each horse
 
     /**
      * Main method to initialise the GUI and start the application.
      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = createFrame();
-            JPanel mainPanel = new JPanel(new BorderLayout());
+            JFrame frame = createFrame(); // Create the main application frame
+            JPanel mainPanel = new JPanel(new BorderLayout()); // Main panel layout
 
             // Left-side vertical stack (customisation + input)
             JPanel leftSidePanel = new JPanel();
@@ -42,28 +52,31 @@ public class MainPanel {
             // Control panel with "Apply Settings" button
             JPanel controlPanel = createControlPanel();
 
+            // Add input and control panels to the left-side panel
             leftSidePanel.add(inputPanel);
             leftSidePanel.add(controlPanel);
 
             // Right: race output panel
             JPanel outputPanel = createOutputPanel();
 
+            // Add panels to the main panel
             mainPanel.add(leftSidePanel, BorderLayout.WEST);
             mainPanel.add(outputPanel, BorderLayout.CENTER);
 
+            // Add the main panel to the frame
             frame.add(mainPanel);
             frame.setVisible(true);
 
             // Set padding for the left-side panel
             leftSidePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            racePanel.setPreferredSize(new Dimension(600, 400));
+            racePanel.setPreferredSize(new Dimension(600, 400)); // Set race panel size
 
             // Creating stats tab for race statistics
             tabbedPane = new JTabbedPane();
-            tabbedPane.addTab("Race", mainPanel);
-            tabbedPane.addTab("Stats", createStatsTab());
+            tabbedPane.addTab("Race", mainPanel); // Add race view tab
+            tabbedPane.addTab("Stats", createStatsTab()); // Add stats view tab
 
-            frame.add(tabbedPane);
+            frame.add(tabbedPane); // Add tabbed pane to the frame
         });
     }
 
@@ -73,8 +86,8 @@ public class MainPanel {
      */
     private static JFrame createFrame() {
         JFrame frame = new JFrame("Horse Race Track Designer");
-        frame.setSize(600, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 300); // Set frame size
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close application on exit
         return frame;
     }
 
@@ -83,18 +96,19 @@ public class MainPanel {
      * @return The JPanel containing input fields.
      */
     private static JPanel createInputPanel() {
-        JPanel panel = new JPanel(new GridLayout(2, 2, 10, 10));
+        JPanel panel = new JPanel(new GridLayout(2, 2, 10, 10)); // Grid layout for input fields
 
         // Input for number of lanes
         JLabel laneLabel = new JLabel("Number of Lanes:");
         laneInput = new JTextField();
-        laneInput.setPreferredSize(new Dimension(40, 20)); 
+        laneInput.setPreferredSize(new Dimension(40, 20)); // Set preferred size for the text field
 
         // Input for track length
         JLabel lengthLabel = new JLabel("Track Length:");
         lengthInput = new JTextField();
-        lengthInput.setPreferredSize(new Dimension(40, 20)); 
+        lengthInput.setPreferredSize(new Dimension(40, 20)); // Set preferred size for the text field
 
+        // Add labels and text fields to the panel
         panel.add(laneLabel);
         panel.add(laneInput);
         panel.add(lengthLabel);
@@ -108,13 +122,14 @@ public class MainPanel {
      * @return The JPanel containing the control button.
      */
     private static JPanel createControlPanel() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton applyButton = new JButton("Apply Settings");
-        resultLabel = new JLabel("");
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Flow layout for the control panel
+        JButton applyButton = new JButton("Apply Settings"); // Button to apply settings
+        resultLabel = new JLabel(""); // Label to display results
 
         // Add action listener to handle button click
         applyButton.addActionListener(e -> handleApplySettings());
 
+        // Add button and label to the panel
         panel.add(applyButton);
         panel.add(resultLabel);
         return panel;
@@ -125,9 +140,9 @@ public class MainPanel {
      * @return The JPanel for race output.
      */
     private static JPanel createOutputPanel() {
-        racePanel = new RacePanel();
-        racePanel.setPreferredSize(new Dimension(600, 300));
-        racePanel.setBackground(Color.WHITE);
+        racePanel = new RacePanel(); // Initialise the race panel
+        racePanel.setPreferredSize(new Dimension(600, 300)); // Set preferred size
+        racePanel.setBackground(Color.WHITE); // Set background colour
         return racePanel;
     }
 
@@ -136,8 +151,8 @@ public class MainPanel {
      * Reads input values, sets up the race, and starts the simulation.
      */
     private static void handleApplySettings() {
-        String laneText = laneInput.getText();
-        String lengthText = lengthInput.getText();
+        String laneText = laneInput.getText(); // Get input for number of lanes
+        String lengthText = lengthInput.getText(); // Get input for track length
 
         try {
             // Parse input values for lanes and track length
@@ -214,9 +229,9 @@ public class MainPanel {
             "Horse", "Races", "Wins", "Falls", "Best Time", "Worst Time",
             "Avg Speed", "Avg Conf", "Win %"
         };
-        statsModel = new DefaultTableModel(columns, 0);
-        statsTable = new JTable(statsModel);
-        return new JScrollPane(statsTable);
+        statsModel = new DefaultTableModel(columns, 0); // Initialise table model with column headers
+        statsTable = new JTable(statsModel); // Create table with the model
+        return new JScrollPane(statsTable); // Wrap the table in a scroll pane
     }
 
     /**
@@ -313,7 +328,7 @@ public class MainPanel {
      * Updates the stats table with the latest horse statistics.
      */
     private static void updateStatsTable() {
-        statsModel.setRowCount(0);
+        statsModel.setRowCount(0); // Clear existing rows
         for (String horseKey : horseStatsMap.keySet()) {
             HorseStats stats = horseStatsMap.get(horseKey);
             statsModel.addRow(new Object[]{
