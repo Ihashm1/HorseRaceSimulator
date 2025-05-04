@@ -228,7 +228,7 @@ public class MainPanel {
         Race race = new Race(length, lanes);
         Horse[] horses = new Horse[lanes];
 
-        // Initialize horses and add them to the race
+        // Initialise horses and add them to the race
         for (int i = 0; i < lanes; i++) {
             HorseConfig config = horseConfigs.get(i);
             double confidence = Math.max(0.3, selectedWeather.getBaseConfidence() + config.confidenceBonus);
@@ -259,7 +259,8 @@ public class MainPanel {
                         for (int m = 0; m < totalSpeed; m++) h.moveForward();
                     }
 
-                    if (!h.hasFallen() && Math.random() < (0.09 * h.getConfidence() * h.getConfidence())) h.fall();
+                    double fallChance = 0.05 * (1 - h.getConfidence());
+                    if (!h.hasFallen() && Math.random() < fallChance) h.fall();
                 }
 
                 racePanel.repaint();
