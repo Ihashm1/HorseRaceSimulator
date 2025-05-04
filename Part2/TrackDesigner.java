@@ -208,50 +208,81 @@ public class TrackDesigner {
     new Thread(() -> {
         boolean finished = false;
 
-        while (!finished) {
-            try { TimeUnit.MILLISECONDS.sleep(100); } catch (InterruptedException e) {}
+            int ticks = 0;
 
-            for (int i = 0; i < horses.length; i++) {
-                Horse h = horses[i];
-                HorseConfig config = horseConfigs.get(i);
+            while (!finished) {
+                try { TimeUnit.MILLISECONDS.sleep(100); } catch (InterruptedException e) {}
+                ticks++;
 
-                if (!h.hasFallen() && Math.random() < h.getConfidence()) {
-                    int totalSpeed = (int)(selectedWeather.getSpeedMultiplier() + config.speedBonus);
-                    for (int m = 0; m < totalSpeed; m++) h.moveForward();
-                }
+                for (int i = 0; i < horses.length; i++) {
+                    Horse h = horses[i];
+                    HorseConfig config = horseConfigs.get(i);
 
-                if (!h.hasFallen() && Math.random() < (0.1 * h.getConfidence() * h.getConfidence())) h.fall();
-            }
-
-            racePanel.repaint();
-
-            boolean someoneWon = false;
-            boolean allFallen = true;
-
-            for (Horse h : horses) {
-                if (h.getDistanceTravelled() >= length) someoneWon = true;
-                if (!h.hasFallen()) allFallen = false;
-            }
-
-            finished = someoneWon || allFallen;
-
-            if (finished) {
-                String message;
-                if (someoneWon) {
-                    for (Horse h : horses) {
-                        if (h.getDistanceTravelled() >= length) {
-                            message = "🏆 Winner: " + h.getName();
-                            JOptionPane.showMessageDialog(null, message);
-                            break;
-                        }
+                    if (!h.hasFallen() && Math.random() < h.getConfidence()) {
+                        int totalSpeed = (int)(selectedWeather.getSpeedMultiplier() + config.speedBonus);
+                        for (int m = 0; m < totalSpeed; m++) h.moveForward();
                     }
-                } else {
-                    message = "💥 All horses have fallen! No winner!";
-                    JOptionPane.showMessageDialog(null, message);
+
+                    if (!h.hasFallen() && Math.random() < (0.1 * h.getConfidence() * h.getConfidence())) h.fall();
+                }
+
+                racePanel.repaint();
+
+                boolean someoneWon = false;
+                boolean allFallen = true;
+
+                for (Horse h : horses) {
+                    if (h.getDistanceTravelled() >= length) someoneWon = true;
+                    if (!h.hasFallen()) allFallen = false;
+                }
+
+                finished = someoneWon || allFallen;
+
+                if (finished) {
+                    for (int i = 0; i < horses.length; i++) {
+                        Horse h = horses[i];
+                        HorseConfig cfg = horseConfigs.get(i);
+                        String name = h.getName();
+                        horseStatsMap.putIfAbsent(name, new HorseStats());
+                        HorseStats stats = horseStatsMap.get(name);
+
+                        boolean won = h.getDistanceTravelled() >= length;
+                        stats.recordRace(won, h.hasFallen(), ticks, h.getConfidence());
+                    }
+
+                    updateStatsTable();
+
+                    if (someoneWon) {
+                        for (Horse h : horses) {
+                            if (h.getDistanceTravelled() >= length) {
+                                JOptionPane.showMessageDialog(null, "🏆 Winner: " + h.getName());
+                                break;
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "💥 All horses have fallen! No winner!");
+                    }
                 }
             }
-        }
     }).start();
+    }
+
+    private static void updateStatsTable() {
+    statsModel.setRowCount(0);
+    for (String name : horseStatsMap.keySet()) {
+        HorseStats stats = horseStatsMap.get(name);
+        statsModel.addRow(new Object[]{
+            name,
+            stats.getRaces(),
+            stats.getWins(),
+            stats.getFalls(),
+            stats.getBestTime() == -1 ? "N/A" : stats.getBestTime(),
+            stats.getWorstTime() == 0 ? "N/A" : stats.getWorstTime(),
+            String.format("%.2f", stats.getAvgSpeed()),
+            String.format("%.2f", stats.getAvgConfidence()),
+            String.format("%.0f%%", stats.getWinRatio() * 100)
+        });
+    }
     }
 
 }
