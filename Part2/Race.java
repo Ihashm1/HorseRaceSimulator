@@ -167,7 +167,7 @@ public class Race
      */
     private void printRace()
     {
-        System.out.print("\033\143"); // clear terminasl window 
+        System.out.print("\033\143"); // clear terminal window 
         
         multiplePrint('=',raceLength+3); //top edge of track
         System.out.println();
@@ -186,9 +186,6 @@ public class Race
     
     /**
      * print a horse's lane during the race
-     * for example
-     * |           X                      |
-     * to show how far the horse has run
      */
     private void printLane(Horse theHorse)
     {
