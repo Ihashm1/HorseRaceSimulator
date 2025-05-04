@@ -179,6 +179,17 @@ public class TrackDesigner {
     return names;
     }
 
+    // Create a stats tab with a table to display horse statistics
+    private static JScrollPane createStatsTab() {
+    String[] columns = {
+        "Name", "Races", "Wins", "Falls", "Best Time", "Worst Time",
+        "Avg Speed", "Avg Conf", "Win %"
+    };
+    statsModel = new DefaultTableModel(columns, 0);
+    statsTable = new JTable(statsModel);
+    return new JScrollPane(statsTable);
+}
+
     private static void runRaceSimulation(int length, ArrayList<HorseConfig> horseConfigs) {
     int lanes = horseConfigs.size();
     Race race = new Race(length, lanes);
