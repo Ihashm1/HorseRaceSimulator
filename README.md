@@ -32,14 +32,15 @@ This will execute the startRace() method within the main() method in Race.java.
 
 To change horse names or add/remove horses, modify the main() method in Race.java. For example:
 
-Race race1 = new Race(20); // specify race length
+````
+Race race1 = new Race(20); // Specify race length
 
-Horse h1 = new Horse('B', "Bolt", 0.8);
+Horse h1 = new Horse('B', "Bolt", 0.8); //Create horse symbol, name and confidence
 
-race1.addHorse(h1, 1); // specifies horse and lane number assigned
+race1.addHorse(h1, 1); // specifies horse and lane number assigned to race
 
 race1.startRace(); // begins the race
-
+`````
 ---
 
 ### Part 2 – Graphical (GUI) Version
@@ -86,3 +87,6 @@ You can run the race as many times as you like—stats are cumulative during the
 ---
 Future Developments:
 Betting system with odds calcualted per horse
+
+
+
