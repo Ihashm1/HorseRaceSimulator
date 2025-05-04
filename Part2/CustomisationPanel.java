@@ -1,8 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * CustomisationPanel class allows users to customise horse attributes
+ * such as breed, coat colour, symbol, saddle, horseshoe, and bridle.
+ */
 public class CustomisationPanel extends JPanel {
 
+    // ComboBoxes for customisation options
     public JComboBox<String> breedBox;
     public JComboBox<String> coatBox;
     public JComboBox<String> symbolBox;
@@ -10,51 +15,66 @@ public class CustomisationPanel extends JPanel {
     public JComboBox<String> horseshoeBox;
     public JComboBox<String> bridleBox;
 
+    /**
+     * Constructor to set up the customisation panel with various options.
+     */
     public CustomisationPanel() {
+        // Set layout and border for the panel
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createTitledBorder("Horse Customisation"));
 
-        // Breed
+        // Breed selection
         breedBox = new JComboBox<>(new String[] {
-            "Thoroughbred (+5 speed, -1 confidence)", "Quarter Horse (+5 confidence, -1 confidence)", "Arabian (+3 speed, +2 confidence)", "French Trotter (+3 confidence, + 2 speed)", "Shetland Pony (+4 confidence)"
+            "Thoroughbred (+5 speed, -1 confidence)", 
+            "Quarter Horse (+5 confidence, -1 confidence)", 
+            "Arabian (+3 speed, +2 confidence)", 
+            "French Trotter (+3 confidence, + 2 speed)", 
+            "Shetland Pony (+4 confidence)"
         });
         add(new JLabel("Breed:"));
         add(breedBox);
 
-        // Coat Colour
+        // Coat Colour selection
         coatBox = new JComboBox<>(new String[] {
-            "Black", "Yellow", "Brown", "Grey", "pink"
+            "Black", 
+            "Yellow", 
+            "Brown", 
+            "Grey", 
+            "pink"
         });
         add(new JLabel("Coat Colour:"));
         add(coatBox);
 
-        // Symbol
+        // Symbol selection
         symbolBox = new JComboBox<>(new String[] {
-            "♘", "♞"
+            "♘", 
+            "♞"
         });
         add(new JLabel("Symbol:"));
         add(symbolBox);
 
-        // Saddle
+        // Saddle selection
         saddleBox = new JComboBox<>(new String[] {
-            "None", "Saddle (+15 confidence)"
+            "None", 
+            "Saddle (+15 confidence)"
         });
         add(new JLabel("Saddle:"));
         add(saddleBox);
 
-        // Horseshoe
+        // Horseshoe selection
         horseshoeBox = new JComboBox<>(new String[] {
-            "None", "Horseshoe (+5 speed, +10 confidence)"
+            "None", 
+            "Horseshoe (+5 speed, +10 confidence)"
         });
         add(new JLabel("Horseshoe:"));
         add(horseshoeBox);
 
-        // Bridle
+        // Bridle selection
         bridleBox = new JComboBox<>(new String[] {
-            "None", "Bridle (+15 speed)"
+            "None", 
+            "Bridle (+15 speed)"
         });
         add(new JLabel("Bridle:"));
         add(bridleBox);
     }
-
 }

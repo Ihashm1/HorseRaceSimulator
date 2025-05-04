@@ -1,19 +1,20 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.SwingUtilities;
-import java.util.concurrent.TimeUnit;
-import java.util.ArrayList;
-import java.util.Random;
-import javax.swing.table.DefaultTableModel;
-import java.util.HashMap;
-
+/**
+ * MainPanel class handles the GUI and logic for the Horse Race Simulator.
+ * It includes input handling, race simulation, and statistics tracking.
+ */
 public class MainPanel {
 
+    // Input fields for lanes and track length
     static JTextField laneInput;
     static JTextField lengthInput;
+
+    // Label to display results
     static JLabel resultLabel;
+
+    // Panel to display the race
     static RacePanel racePanel;
+
+    // Weather condition for the race
     static WeatherCondition selectedWeather = WeatherCondition.DRY;
     static int currentWeatherIndex = 0;
 
@@ -170,12 +171,12 @@ public class MainPanel {
             String name = JOptionPane.showInputDialog(null, "Enter name for Horse " + (i + 1) + ":");
             if (name == null || name.trim().isEmpty()) name = "Horse" + (i + 1);
 
-            // Open customization panel for the horse
+            // Open customisation panel for the horse
             CustomisationPanel cp = new CustomisationPanel();
             int result = JOptionPane.showConfirmDialog(null, cp, "Customise " + name, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (result != JOptionPane.OK_OPTION) continue;
 
-            // Get selected attributes from the customization panel
+            // Get selected attributes from the customisation panel
             String symbol = (String) cp.symbolBox.getSelectedItem();
             int speedBonus = 0;
             double confidenceBonus = 0;
