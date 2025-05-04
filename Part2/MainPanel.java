@@ -38,6 +38,14 @@ public class MainPanel {
      * Main method to initialise the GUI and start the application.
      */
     public static void main(String[] args) {
+
+        startRaceGUI(); // Start    
+        
+    }
+
+
+    public static void startRaceGUI(){
+
         SwingUtilities.invokeLater(() -> {
             JFrame frame = createFrame(); // Create the main application frame
             JPanel mainPanel = new JPanel(new BorderLayout()); // Main panel layout
@@ -79,6 +87,7 @@ public class MainPanel {
             frame.add(tabbedPane); // Add tabbed pane to the frame
         });
     }
+
 
     /**
      * Creates the main application frame.
