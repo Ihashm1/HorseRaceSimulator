@@ -251,13 +251,13 @@ public class Race
     race1.addHorse(h3, 3);
     race1.startRace();
 
-    // Race 2: Empty and Extra Lanes
+    /* Race 2: Empty and Extra Lanes
     Race race2 = new Race(20);
     race2.addHorse(h1, 1); // valid
     race2.addHorse(h2, 2); // valid
     race2.addHorse(h1, 4); // same horse reused
-    // lane 3 and 5 left empty
-    race2.startRace();
+     lane 3 and 5 left empty
+    race2.startRace(); */
 
         
       }
