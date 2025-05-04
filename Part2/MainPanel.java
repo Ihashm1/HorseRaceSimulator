@@ -287,7 +287,7 @@ public class MainPanel {
                         boolean won = h.getDistanceTravelled() >= length;
 
                         double timeInSeconds = ticks * 0.1;
-                        stats.recordRace(won, h.hasFallen(), timeInSeconds, h.getConfidence());
+                        stats.recordRace(won, h.hasFallen(), timeInSeconds, h.getConfidence(), h.getDistanceTravelled());
                     }
 
                     updateStatsTable();

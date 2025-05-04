@@ -15,9 +15,10 @@ public class HorseStats {
         if (won) wins++;
         if (fell) falls++;
         if (!fell) {
-            bestTime = Math.min(bestTime, time);
-            worstTime = Math.max(worstTime, time);
-            totalTime += time;
+            this.bestTime = Math.min(bestTime, time);
+            this.worstTime = Math.max(worstTime, time);
+            this.totalTime += time;
+            this.trackLength = trackLength;
         }
         totalConfidence += confidence;
     }
