@@ -129,16 +129,16 @@ public class TrackDesigner {
 
             // Breed logic
             String breed = (String) cp.breedBox.getSelectedItem();
-            if (breed.contains("Thoroughbred")) { speedBonus += 0.5; confidenceBonus -= 0.1; }
-            if (breed.contains("Quarter Horse")) { confidenceBonus += 0.5; confidenceBonus -= 0.1; }
+            if (breed.contains("Thoroughbred")) { speedBonus += 0.5; confidenceBonus -= 0.2; }
+            if (breed.contains("Quarter Horse")) { confidenceBonus += 0.5; speedBonus -= 0.2; }
             if (breed.contains("Arabian")) { speedBonus += 0.3; confidenceBonus += 0.2; }
             if (breed.contains("French Trotter")) { speedBonus += 0.2; confidenceBonus += 0.3; }
-            if (breed.contains("Shetland Pony")) { confidenceBonus += 0.4; }
+            if (breed.contains("Shetland Pony")) { confidenceBonus += 0.3; }
 
             // Equipment logic
             if (cp.saddleBox.getSelectedItem().toString().contains("+15 confidence")) confidenceBonus += 0.15;
             if (cp.horseshoeBox.getSelectedItem().toString().contains("Horseshoe")) {
-                speedBonus += 0.5;
+                speedBonus += 0.1;
                 confidenceBonus += 0.1;
             }
             if (cp.bridleBox.getSelectedItem().toString().contains("Bridle")) speedBonus += 0.15;
@@ -268,6 +268,22 @@ class RacePanel extends JPanel  {
         Color coat = getColorFromName(horseCoatColors[i]);
         g.setColor(coat);
         g.fillOval(x, y + 5, 20, 20); // draw colored body
+
+        // Draw tail
+        g.setColor(coat.darker());
+        g.drawLine(x - 2, y + 15, x - 4, y + 18);
+
+
+        // Draw legs
+        g.setColor(Color.BLACK);
+        g.drawLine(x + 15, y + 23, x + 16, y + 26);  
+        g.drawLine(x + 5, y + 23, x + 4, y + 26);  
+
+        // Draw head
+        g.setColor(coat.brighter());
+        g.fillOval(x + 18, y + 8, 10, 10); // head
+
+
         g.setColor(Color.BLACK);
         g.drawString(h.getName() + " (Conf: " + String.format("%.2f", h.getConfidence()) + ")", x + 30, y + 20);
                 }
@@ -276,7 +292,7 @@ class RacePanel extends JPanel  {
         private Color getColorFromName(String name) {
         switch (name.toLowerCase()) {
         case "black": return Color.BLACK;
-        case "white": return Color.WHITE;
+        case "yellow": return Color.YELLOW;
         case "brown": return new Color(139, 69, 19);
         case "grey": return Color.GRAY;
         case "pink": return Color.PINK;

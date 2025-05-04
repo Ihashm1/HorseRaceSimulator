@@ -23,7 +23,7 @@ public class CustomisationPanel extends JPanel {
 
         // Coat Colour
         coatBox = new JComboBox<>(new String[] {
-            "Black", "White", "Brown", "Grey", "pink"
+            "Black", "Yellow", "Brown", "Grey", "pink"
         });
         add(new JLabel("Coat Colour:"));
         add(coatBox);
