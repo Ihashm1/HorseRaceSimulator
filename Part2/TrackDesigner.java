@@ -219,7 +219,7 @@ public class TrackDesigner {
                     HorseConfig config = horseConfigs.get(i);
 
                     if (!h.hasFallen() && Math.random() < h.getConfidence()) {
-                        int totalSpeed = (int)(selectedWeather.getSpeedMultiplier() + config.speedBonus);
+                        int totalSpeed = Math.max(1, (int)(selectedWeather.getSpeedMultiplier() + config.speedBonus));
                         for (int m = 0; m < totalSpeed; m++) h.moveForward();
                     }
 
