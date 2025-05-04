@@ -27,9 +27,9 @@ public class WeatherCondition {
     }
 
     // Predefined weather types
-    public static final WeatherCondition DRY = new WeatherCondition("Dry", 1.0, 0.5);
-    public static final WeatherCondition MUDDY = new WeatherCondition("Muddy", 0.7, 0.4);
-    public static final WeatherCondition ICY = new WeatherCondition("Icy", 1.2, 0.3);
+    public static final WeatherCondition DRY = new WeatherCondition("Dry", 1.0, 0.6);
+    public static final WeatherCondition MUDDY = new WeatherCondition("Muddy", 0.7, 0.5);
+    public static final WeatherCondition ICY = new WeatherCondition("Icy", 1.2, 0.4);
 
     public static final WeatherCondition[] CONDITIONS = { DRY, MUDDY, ICY };
 }
