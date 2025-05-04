@@ -159,7 +159,7 @@ public class TrackDesigner {
             if (cp.bridleBox.getSelectedItem().toString().contains("Bridle")) speedBonus += 0.15;
 
             String coatColor = (String) cp.coatBox.getSelectedItem();
-            configs.add(new HorseConfig(name, symbol, speedBonus, confidenceBonus, coatColor));
+            configs.add(new HorseConfig(name, symbol, speedBonus, confidenceBonus, coatColor, breed));
         }
 
             return configs;
@@ -182,8 +182,8 @@ public class TrackDesigner {
     // Create a stats tab with a table to display horse statistics
     private static JScrollPane createStatsTab() {
     String[] columns = {
-        "Name", "Races", "Wins", "Falls", "Best Time", "Worst Time",
-        "Avg Speed", "Avg Conf", "Win %"
+    "Horse", "Races", "Wins", "Falls", "Best Time", "Worst Time",
+    "Avg Speed", "Avg Conf", "Win %"
     };
     statsModel = new DefaultTableModel(columns, 0);
     statsTable = new JTable(statsModel);
@@ -242,9 +242,9 @@ public class TrackDesigner {
                     for (int i = 0; i < horses.length; i++) {
                         Horse h = horses[i];
                         HorseConfig cfg = horseConfigs.get(i);
-                        String name = h.getName();
-                        horseStatsMap.putIfAbsent(name, new HorseStats());
-                        HorseStats stats = horseStatsMap.get(name);
+                        String horseKey = h.getName() + " " + cfg.coatColor + " " + cfg.breed;
+                        horseStatsMap.putIfAbsent(horseKey, new HorseStats());
+                        HorseStats stats = horseStatsMap.get(horseKey);
 
                         boolean won = h.getDistanceTravelled() >= length;
                         stats.recordRace(won, h.hasFallen(), ticks, h.getConfidence());
@@ -269,10 +269,10 @@ public class TrackDesigner {
 
     private static void updateStatsTable() {
     statsModel.setRowCount(0);
-    for (String name : horseStatsMap.keySet()) {
-        HorseStats stats = horseStatsMap.get(name);
+    for (String horseKey : horseStatsMap.keySet()) {
+        HorseStats stats = horseStatsMap.get(horseKey);
         statsModel.addRow(new Object[]{
-            name,
+            horseKey,
             stats.getRaces(),
             stats.getWins(),
             stats.getFalls(),
@@ -321,7 +321,7 @@ class RacePanel extends JPanel  {
             String symbol = String.valueOf(h.getSymbol());
         String currentSymbol = h.hasFallen() ? "❌" : symbol;
 
-        g.drawString(symbol, margin - 15, y + 20); // Fixed symbol at lane start
+        g.drawString(currentSymbol, margin - 15, y + 20); // Fixed symbol at lane start
         Color coat = getColorFromName(horseCoatColors[i]);
         g.setColor(coat);
         g.fillOval(x, y + 5, 20, 20); // draw colored body
