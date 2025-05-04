@@ -37,9 +37,9 @@ Race race1 = new Race(20); // Specify race length
 
 Horse h1 = new Horse('B', "Bolt", 0.8); //Create horse symbol, name and confidence
 
-race1.addHorse(h1, 1); // specifies horse and lane number assigned to race
+race1.addHorse(h1, 1); // Specifies horse and lane number assigned to race
 
-race1.startRace(); // begins the race
+race1.startRace(); // Begins the race
 `````
 ---
 
