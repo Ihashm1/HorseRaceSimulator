@@ -231,7 +231,7 @@ public class MainPanel {
         // Initialize horses and add them to the race
         for (int i = 0; i < lanes; i++) {
             HorseConfig config = horseConfigs.get(i);
-            double confidence = selectedWeather.getBaseConfidence() + config.confidenceBonus;
+            double confidence = Math.max(0.3, selectedWeather.getBaseConfidence() + config.confidenceBonus);
             Horse h = new Horse(config.symbol.charAt(0), config.name, confidence);
             horses[i] = h;
             race.addHorse(h, i + 1);
@@ -259,7 +259,7 @@ public class MainPanel {
                         for (int m = 0; m < totalSpeed; m++) h.moveForward();
                     }
 
-                    if (!h.hasFallen() && Math.random() < (0.1 * h.getConfidence() * h.getConfidence())) h.fall();
+                    if (!h.hasFallen() && Math.random() < (0.09 * h.getConfidence() * h.getConfidence())) h.fall();
                 }
 
                 racePanel.repaint();
@@ -283,9 +283,11 @@ public class MainPanel {
                         String horseKey = h.getName() + " " + cfg.coatColor + " " + cfg.breed;
                         horseStatsMap.putIfAbsent(horseKey, new HorseStats());
                         HorseStats stats = horseStatsMap.get(horseKey);
-
+                        
                         boolean won = h.getDistanceTravelled() >= length;
-                        stats.recordRace(won, h.hasFallen(), ticks, h.getConfidence());
+
+                        double timeInSeconds = ticks * 0.1;
+                        stats.recordRace(won, h.hasFallen(), timeInSeconds, h.getConfidence());
                     }
 
                     updateStatsTable();

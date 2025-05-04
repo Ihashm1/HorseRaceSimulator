@@ -4,12 +4,13 @@ public class HorseStats {
     private int races;
     private int wins;
     private int falls;
-    private int bestTime = Integer.MAX_VALUE;
-    private int worstTime = 0;
-    private int totalTime;
+    private double bestTime = Integer.MAX_VALUE;
+    private double worstTime = 0;
+    private double totalTime;
     private double totalConfidence;
+    private double trackLength;
 
-    public void recordRace(boolean won, boolean fell, int time, double confidence) {
+    public void recordRace(boolean won, boolean fell, double time, double confidence, double trackLength) {
         races++;
         if (won) wins++;
         if (fell) falls++;
@@ -24,11 +25,10 @@ public class HorseStats {
     public int getRaces() { return races; }
     public int getWins() { return wins; }
     public int getFalls() { return falls; }
-    public int getBestTime() { return bestTime == Integer.MAX_VALUE ? -1 : bestTime; }
-    public int getWorstTime() { return worstTime; }
+    public double getBestTime() { return bestTime == Integer.MAX_VALUE ? -1 : bestTime; }
+    public double getWorstTime() { return worstTime; }
     public double getAvgSpeed() {
-        int validRaces = races - falls;
-        return validRaces > 0 ? (double) totalTime / validRaces : 0;
+        return totalTime > 0 ? trackLength / totalTime : 0;
     }
     public double getAvgConfidence() {
         return races > 0 ? totalConfidence / races : 0;
